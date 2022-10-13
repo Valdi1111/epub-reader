@@ -1,0 +1,12 @@
+.divider:after,
+.divider:before {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #eee;
+}
+
+/* Add a hover effect on social buttons */
+.btn-social:hover {
+    opacity: 0.7;
+}

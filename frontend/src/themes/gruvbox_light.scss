@@ -1,0 +1,109 @@
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/mixins";
+
+body[data-theme="gruvbox_light"] {
+  $enable-gradients: true;
+
+  /* redefine theme colors for dark theme */
+  /*$primary: #012345;
+  $secondary: #111111;
+  $success: #222222;
+  $dark: #000;*/
+
+  $theme-colors: (
+          "primary": $primary,
+          "secondary": $secondary,
+          "success": $success,
+          "danger": $danger,
+          "info": $indigo,
+          "dark": $dark,
+          "light": #aaa,
+  );
+
+  /* redefine theme color variables */
+  @each $color, $value in $theme-colors {
+    --#{$variable-prefix}#{$color}: #{$value};
+  }
+
+  $theme-colors-rgb: map-loop($theme-colors, to-rgb, "$value");
+
+  @each $color, $value in $theme-colors-rgb {
+    --#{$variable-prefix}#{$color}-rgb: #{$value};
+  }
+
+  $body-bg: #fbf1c7;
+  $body-bg-rgb: 251, 241, 199;
+  $body-color: #3c3836;
+  $border-color: darken($body-bg, 20%);
+  $disabled-bg: darken($body-bg, 10%);
+
+  $btn-close-color: $body-color;
+  $btn-close-bg: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='#{$btn-close-color}'><path d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/></svg>");
+
+  $card-bg: $body-bg;
+  $card-color: $body-color;
+  $card-border-color: rgba($white, .125);
+
+  $input-bg: $body-bg;
+  $input-color: $body-color;
+  $input-border-color: $border-color;
+  $input-focus-bg: $input-bg;
+  $input-focus-color: $input-color;
+  $input-disabled-bg: $disabled-bg;
+
+  $form-select-bg: $body-bg;
+  $form-select-color: $body-color;
+  $form-select-border-color: $border-color;
+  $form-select-disabled-bg: $disabled-bg;
+
+  $form-check-input-bg: $body-bg;
+  $form-check-label-color: $body-color;
+  $form-check-input-border: 1px solid $border-color;
+
+  $input-group-addon-bg: $body-bg;
+  $input-group-addon-color: $body-color;
+  $input-group-addon-border-color: $border-color;
+
+  $form-file-button-bg: $body-bg;
+  $form-file-button-hover-bg: $body-bg;
+  $form-file-button-color: $body-color;
+
+  $form-range-track-bg: $border-color;
+
+  $modal-content-bg: $body-bg;
+  $modal-content-color: $body-color;
+  $modal-content-border-color: $border-color;
+  $modal-header-border-color: $border-color;
+  $modal-footer-border-color: $border-color;
+
+  $list-group-bg: $body-bg;
+  $list-group-color: $body-color;
+  $list-group-border-color: $border-color;
+
+  $dropdown-bg: $body-bg;
+  $dropdown-color: $body-color;
+  $dropdown-border-color: $border-color;
+
+  $dropdown-link-color: $body-color;
+  $dropdown-link-hover-color: darken($dropdown-link-color, 10%);
+  $dropdown-link-hover-bg: darken($dropdown-bg, 10%);
+
+  --#{$variable-prefix}body-color: #{$body-color};
+  --#{$variable-prefix}body-bg: #{$body-bg};
+  --#{$variable-prefix}body-bg-rgb: #{$body-bg-rgb};
+
+  @import "node_modules/bootstrap/scss/bootstrap";
+}
+
+body[data-theme="gruvbox_light"] ::-webkit-scrollbar-corner {
+  background-color: #fbf1c7;
+}
+
+body[data-theme="gruvbox_light"] ::-webkit-scrollbar-thumb {
+  background-color: #3f4447;
+}
+
+body[data-theme="gruvbox_light"] a, body[data-theme="gruvbox_light"] a:hover {
+  color: #3c3836;
+}
