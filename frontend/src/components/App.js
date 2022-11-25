@@ -1,7 +1,20 @@
 import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
 import {useEffect, useState} from "react";
 import $ from "jquery";
-import {FONT, FONT_SIZE, FORCE_FONT_SIZE, JUSTIFY, LAYOUT, MARGINS, SPACING, THEME, WIDTH} from "./Settings";
+import {
+    FONT,
+    FONT_SIZE,
+    FORCE_FONT,
+    FORCE_FONT_SIZE,
+    FONTS,
+    SPACING,
+    MARGINS,
+    WIDTH,
+    THEME,
+    JUSTIFY,
+    LAYOUT,
+    LAYOUT_AUTO
+} from "./Settings";
 import {getThemes} from "./Api";
 import Library from "./library/Library";
 import BookElement from "./book/BookElement";
@@ -22,15 +35,16 @@ function App() {
         );
         // load settings
         const s = {};
-        getSettingOrSave(s, FONT, "Serif, sans-serif");
-        getSettingOrSave(s, FONT_SIZE, 13);
+        getSettingOrSave(s, FONT, FONTS[0]);
+        getSettingOrSave(s, FONT_SIZE, 19);
+        getSettingOrSave(s, FORCE_FONT, true);
+        getSettingOrSave(s, FORCE_FONT_SIZE, true);
         getSettingOrSave(s, SPACING, 1.4);
         getSettingOrSave(s, MARGINS, 100);
         getSettingOrSave(s, WIDTH, 1700);
         getSettingOrSave(s, THEME, "dark");
-        getSettingOrSave(s, LAYOUT, "auto");
+        getSettingOrSave(s, LAYOUT, LAYOUT_AUTO);
         getSettingOrSave(s, JUSTIFY, true);
-        getSettingOrSave(s, FORCE_FONT_SIZE, true);
         setSettings(s);
     }, []);
 

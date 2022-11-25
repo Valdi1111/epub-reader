@@ -44,7 +44,7 @@ async function getNotInShelf() {
                       INNER JOIN book_cache bc ON b.id = bc.id
                       INNER JOIN book_metadata bm ON b.id = bm.id
                       INNER JOIN book_current br ON b.id = br.id
-             ORDER BY b.last_read DESC`,
+             ORDER BY bm.title`,
             []
         );
         return results2;
@@ -63,7 +63,7 @@ async function getNotInShelf() {
                   INNER JOIN book_metadata bm ON b.id = bm.id
                   INNER JOIN book_current br ON b.id = br.id
          WHERE b.url NOT REGEXP ?
-         ORDER BY b.last_read DESC`,
+         ORDER BY bm.title`,
         [exp]
     );
     return results2;

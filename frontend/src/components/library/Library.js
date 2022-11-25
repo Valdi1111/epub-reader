@@ -1,7 +1,7 @@
 import {Link, Route, Routes} from "react-router-dom";
 import {useRef, useState} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faArrowRightFromBracket, faBars, faPalette, faPlus} from "@fortawesome/free-solid-svg-icons";
+import {faBars} from "@fortawesome/free-solid-svg-icons";
 import BookAddModal from "./BookAddModal";
 import BookDeleteModal from "./BookDeleteModal";
 import BookInfoModal from "./BookInfoModal";
@@ -12,6 +12,7 @@ import LibraryShelves from "./LibraryShelves";
 import LibraryNotInShelf from "./LibraryNotInShelf";
 import ErrorPage from "../ErrorPage";
 import {logout} from "../Auth";
+import avatar from "../../images/avatar.png";
 
 function Library(props) {
     const [refresh, setRefresh] = useState(0);
@@ -34,36 +35,45 @@ function Library(props) {
             <BookDeleteModal refresh={refreshBooks}/>
             <ThemeChangeModal settings={props.settings} setSetting={props.setSetting} themes={props.themes}/>
             <div className={"d-flex flex-column min-vh-100"}>
-                <div className={"p-2 border-bottom sticky-top bg-body"}>
-                    <button type={"button"} className={"d-md-none btn-normal btn btn-outline-secondary"}
-                            data-bs-toggle={"collapse"} data-bs-target={"#top-nav"} aria-controls={"top-nav"}
-                            aria-expanded={false} aria-label={"Toggle navigation"}>
-                        <FontAwesomeIcon icon={faBars} width={16} height={16}/>
-                    </button>
-                    <button type={"button"} className={"btn-normal btn btn-outline-danger float-end"}
-                            onClick={onLogout}>
-                        <FontAwesomeIcon icon={faArrowRightFromBracket} width={16} height={16}/>
-                    </button>
-                    <button type={"button"} className={"btn-normal btn btn-outline-secondary float-end me-2"}
-                            data-bs-toggle={"modal"} data-bs-target={"#theme-modal"}>
-                        <FontAwesomeIcon icon={faPalette} width={16} height={16}/>
-                    </button>
-                    <button type={"button"} className={"btn-normal btn btn-outline-success float-end me-2"}
-                            data-bs-toggle={"modal"} data-bs-target={"#add-modal"}>
-                        <FontAwesomeIcon icon={faPlus} width={16} height={16}/>
-                    </button>
-                    <nav className={"nav-pills flex-column d-md-flex flex-md-row collapse navbar-collapse"}
-                         id={"top-nav"}>
-                        <div className={"d-md-none w-100 border-top my-2"}/>
-                        <Link to={"/library/all"} className={"nav-link text-center me-md-2 mb-2 mb-md-0"}>
-                            All books
-                        </Link>
-                        <Link to={"/library/shelves"} className={"nav-link text-center me-md-2 mb-2 mb-md-0"}>
-                            Shelves
-                        </Link>
-                        <Link to={"/library/not-in-shelf"} className={"nav-link text-center"}>
-                            Not in shelf
-                        </Link>
+                <div className={"sticky-top border-bottom bg-body"}>
+                    <div className={"d-flex align-items-center justify-content-between p-2"} style={{height: "60px"}}>
+                        <button type={"button"} className={"btn-normal d-md-none btn btn-outline-secondary"}
+                                data-bs-toggle={"collapse"} data-bs-target={"#top-nav"} aria-controls={"top-nav"}
+                                aria-expanded={false} aria-label={"Toggle navigation"}>
+                            <FontAwesomeIcon icon={faBars} width={16} height={16}/>
+                        </button>
+                        <nav className={"d-none d-md-flex flex-row nav-pills"}>
+                            <div/>
+                            <Link to={"/library/all"} className={"nav-link text-center me-2"}>All books</Link>
+                            <Link to={"/library/shelves"} className={"nav-link text-center me-2"}>Shelves</Link>
+                            <Link to={"/library/not-in-shelf"} className={"nav-link text-center"}>Not in shelf</Link>
+                        </nav>
+                        <div className="dropdown">
+                            <div className={"link-secondary dropdown-toggle cursor-pointer"} id={"dropdown-user"}
+                                 data-bs-toggle={"dropdown"} aria-expanded={false}>
+                                <img src={avatar} alt={"avatar"} width={40} height={40} className={"rounded-circle"}/>
+                            </div>
+                            <ul className={"dropdown-menu text-small"} aria-labelledby={"dropdown-user"}>
+                                <li>
+                                    <span className={"dropdown-item cursor-pointer"} data-bs-toggle={"modal"}
+                                          data-bs-target={"#add-modal"}>Add</span>
+                                </li>
+                                <li>
+                                    <span className={"dropdown-item cursor-pointer"} data-bs-toggle={"modal"}
+                                          data-bs-target={"#theme-modal"}>Theme</span>
+                                </li>
+                                <li><hr className={"dropdown-divider"}/></li>
+                                <li>
+                                    <span className={"dropdown-item cursor-pointer"} onClick={onLogout}>Sign out</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <nav className={"flex-column d-md-none nav-pills collapse navbar-collapse"} id={"top-nav"}>
+                        <div className={"w-100 border-top"}/>
+                        <Link to={"/library/all"} className={"nav-link text-center m-2"}>All books</Link>
+                        <Link to={"/library/shelves"} className={"nav-link text-center m-2"}>Shelves</Link>
+                        <Link to={"/library/not-in-shelf"} className={"nav-link text-center m-2"}>Not in shelf</Link>
                     </nav>
                 </div>
                 <Routes>

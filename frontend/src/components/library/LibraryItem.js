@@ -1,8 +1,7 @@
 import {Link} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faEllipsis} from "@fortawesome/free-solid-svg-icons";
+import {faCheckCircle, faEllipsis} from "@fortawesome/free-solid-svg-icons";
 import {COVERS_URL, formatReadPercent} from "../Api";
-import LoadingSpinner from "../LoadingSpinner";
 
 function LibraryItem(props) {
     const {id, shelf, url, title, creator, cover, page, total, read} = props.book;
@@ -30,24 +29,25 @@ function LibraryItem(props) {
         );
     }
 
+    function ItemRead() {
+        if(read) {
+            return <FontAwesomeIcon icon={faCheckCircle} width={16} height={16} className={"text-success"}/>
+        }
+        return <span className={"text-secondary"}>{formatReadPercent(page, total)}</span>;
+    }
+
     function ItemGoToShelf() {
         if (!shelf) {
             return <></>;
         }
-        return (
-            <li>
-                <Link className={"dropdown-item"} to={`/library/shelves/${shelf}`}>
-                    Go to shelf
-                </Link>
-            </li>
-        );
+        return <li><Link className={"dropdown-item"} to={`/library/shelves/${shelf}`}>Go to shelf</Link></li>;
     }
 
     return (
         <div className={"d-flex flex-column"} style={{width: "150px"}}>
             <ItemCover/>
             <div className={"d-flex flex-row justify-content-between align-items-center mt-1"}>
-                <span className={"text-secondary"}>{formatReadPercent(page, total)}</span>
+                <ItemRead/>
                 <div className="dropdown">
                     <button className={"btn btn-outline-secondary px-2 py-0"} id={"book-other"}
                             type={"button"} data-bs-toggle={"dropdown"} aria-expanded={"false"}>

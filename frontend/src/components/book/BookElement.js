@@ -5,7 +5,19 @@ import JSZip from "jszip";
 import bootstrap from "bootstrap/dist/js/bootstrap.bundle.min";
 import {Book} from "epubjs";
 import $ from "jquery";
-import {FONT, FONT_SIZE, FORCE_FONT_SIZE, JUSTIFY, LAYOUT, LAYOUTS, MARGINS, SPACING, THEME, WIDTH} from "../Settings";
+import {
+    FONT,
+    FONT_SIZE,
+    FORCE_FONT,
+    FORCE_FONT_SIZE,
+    JUSTIFY,
+    LAYOUT,
+    LAYOUTS,
+    MARGINS,
+    SPACING,
+    THEME,
+    WIDTH
+} from "../Settings";
 import {EPUB_URL, THEMES_URL, getBookById, savePosition} from "../Api";
 
 function BookElement(props) {
@@ -169,11 +181,11 @@ function BookElement(props) {
 
     function updateDefaultTheme() {
         const theme = {};
-        theme["font-family"] = settings[FONT];
+        theme["font-family"] = settings[FONT] + (settings[FORCE_FONT] === "true" ? " !important" : "");
         theme["font-size"] = settings[FONT_SIZE] + (settings[FORCE_FONT_SIZE] === "true" ? "px !important" : "px");
         theme["line-height"] = settings[SPACING];
         theme["text-align"] = settings[JUSTIFY] === "true" ? "justify" : "left";
-        book.rendition.themes.default({"body": theme});
+        book.rendition.themes.default({"p": theme, "a": theme, "span": theme});
     }
 
     function updateTheme() {
@@ -182,7 +194,8 @@ function BookElement(props) {
 
     function changeSetting(key, value) {
         setSetting(key, value);
-        if (key === FONT || key === FONT_SIZE || key === SPACING || key === JUSTIFY || key === FORCE_FONT_SIZE) {
+        if (key === FONT || key === FONT_SIZE || key === SPACING || key === JUSTIFY
+            || key === FORCE_FONT || key === FORCE_FONT_SIZE) {
             updateDefaultTheme();
         }
         if (key === WIDTH) {

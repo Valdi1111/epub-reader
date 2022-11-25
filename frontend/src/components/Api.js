@@ -2,8 +2,8 @@ import {Book} from "epubjs";
 import axios from "axios";
 import {getToken} from "./Auth";
 
-export const URL = "http://192.168.1.170:12135/"
-//export const URL = "/";
+//export const URL = "http://192.168.1.170:12135/"
+export const URL = "/";
 export const API_URL = URL + "api/v1/";
 export const THEMES_URL = URL + "themes/";
 export const COVERS_URL = URL + "covers/";
@@ -195,25 +195,59 @@ export function savePosition(id, position, page) {
 }
 
 function generateNavigation(book) {
-    let navigation = [];
+    // TODO da rimuovere se funziona il nuovo metodo di subchapters
+    /*let navigation = [];
     book.navigation.forEach(item => {
         let nav = {};
         nav["id"] = item.id;
         nav["label"] = item.label;
-        //nav["href"] = "Text/" + item.href.split('/').pop();
-        //console.log(item.href)
-        const dash = "#" + item.href.split('#').pop();
-        if(book.spine.get(item.href) !== null) {
+        let dash = "";
+        if(item.href.includes("#")) {
+            dash = "#" + item.href.split('#').pop();
+        }
+        if(item.href === null || item.href === "") {
+            nav["href"] = null;
+        } else if(book.spine.get(item.href) !== null) {
             nav["href"] = book.spine.get(item.href).href + dash;
             //console.log("Using first method", nav["href"])
         } else {
             nav["href"] = book.spine.get("Text/" + item.href.split('/').pop()).href + dash;
             //console.log("Using second method", nav["href"])
         }
+        console.log(item.id, item.label, item.href, item.subitems, item.subitems.length)
+        if(item.subitems.length > 0) {
+
+        }
         // TODO handle sub items
         navigation = [...navigation, nav];
     });
     //console.log(book.spine)
+    return navigation;*/
+    return handleNavigationItems(book, book.navigation);
+}
+
+function handleNavigationItems(book, items) {
+    let navigation = [];
+    items.forEach(item => {
+        let nav = {};
+        nav["id"] = item.id;
+        nav["label"] = item.label;
+        let dash = "";
+        if(item.href.includes("#")) {
+            dash = "#" + item.href.split('#').pop();
+        }
+        if(item.href === null || item.href === "") {
+            nav["href"] = null;
+        } else if(book.spine.get(item.href) !== null) {
+            nav["href"] = book.spine.get(item.href).href + dash;
+            //console.log("Using first method", nav["href"])
+        } else {
+            nav["href"] = book.spine.get("Text/" + item.href.split('/').pop()).href + dash;
+            //console.log("Using second method", nav["href"])
+        }
+        nav.subitems = handleNavigationItems(book, item.subitems);
+        navigation = [...navigation, nav];
+    });
     return navigation;
 }
 
@@ -222,16 +256,32 @@ function generateChapters(book) {
     let nav = "";
     book.spine.items.forEach(spine => {
         let s = spine.href.split('/').pop();
-        let item = null;
+        // TODO da rimuovere se funziona il nuovo metodo di subchapters
+        /*let item = null;
         book.navigation.forEach(nav => {
             if (nav.href.includes(s)) {
                 item = nav;
             }
-        });
+        });*/
+        let item = findChapter(book.navigation, s);
         if (item != null) {
             nav = item.label;
         }
         chapters[spine.href] = nav;
     });
     return chapters;
+}
+
+function findChapter(items, s) {
+    let item = null;
+    items.forEach(nav => {
+        if (nav.href.includes(s)) {
+            item = nav;
+        }
+        let chap = findChapter(nav.subitems, s);
+        if(chap != null) {
+            item = chap;
+        }
+    });
+    return item;
 }

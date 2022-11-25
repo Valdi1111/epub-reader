@@ -1,7 +1,5 @@
 import {useEffect, useState} from "react";
 import $ from "jquery";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faEllipsis} from "@fortawesome/free-solid-svg-icons";
 import {getNotInShelf} from "../Api";
 import LibraryItem from "./LibraryItem";
 import LibraryItemAdder from "./LibraryItemAdder";
