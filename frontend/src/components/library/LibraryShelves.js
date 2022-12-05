@@ -63,14 +63,14 @@ function LibraryShelves(props) {
         }
         return (
             <>
-                <button className={"btn btn-primary rounded-circle d-flex align-items-center p-3 ms-auto"}
+                <button className={"btn btn-primary btn-icon ms-auto"}
                         type={"button"} data-bs-toggle={"modal"} data-bs-target={"#edit-shelf-modal"}
                         data-bs-path={shelves.filter(s => `${s.id}` === id).map(s => s.path)[0]}
                         data-bs-name={shelves.filter(s => `${s.id}` === id).map(s => s.name)[0]}
                         data-bs-id={id}>
                     <FontAwesomeIcon icon={faPencil} width={16} height={16}/>
                 </button>
-                <button className={"btn btn-danger rounded-circle d-flex align-items-center p-3 ms-2"}
+                <button className={"btn btn-danger btn-icon ms-2"}
                         type={"button"} data-bs-toggle={"modal"} data-bs-target={"#delete-shelf-modal"}
                         data-bs-name={shelves.filter(s => `${s.id}` === id).map(s => s.name)[0]}
                         data-bs-id={id}>
@@ -97,7 +97,7 @@ function LibraryShelves(props) {
     function ShelfItem(props) {
         const {s} = props
         return (
-            <li key={s.id} data-id={s.id} title={s.name} className={`list-group-item ${shelfActive(s)} p-0`}>
+            <li key={s.id} data-id={s.id} title={s.name} className={`list-group-item p-0 ${shelfActive(s)}`}>
                 <Link className={"d-flex flex-row justify-content-between align-items-start py-2 px-3"}
                       to={`/library/shelves/${s.id}`}>
                     <div className={"min-width-0"}>
@@ -124,7 +124,7 @@ function LibraryShelves(props) {
                             </ul>
                         </div>
                         <div className={"d-flex flex-row w-100 p-2"}>
-                            <button className={"btn btn-success rounded-circle d-flex align-items-center p-3"}
+                            <button className={"btn btn-success btn-icon"}
                                     type={"button"} data-bs-toggle={"modal"} data-bs-target={"#add-shelf-modal"}>
                                 <FontAwesomeIcon icon={faPlus} width={16} height={16}/>
                             </button>
