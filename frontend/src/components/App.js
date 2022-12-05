@@ -15,25 +15,24 @@ import {
     LAYOUT,
     LAYOUT_AUTO
 } from "./Settings";
-import {getThemes} from "./Api";
+import {getThemes, getToken, getUserData} from "./Api";
 import Library from "./library/Library";
 import BookElement from "./book/BookElement";
 import BookRenderer from "./book/BookRenderer";
 import ErrorPage from "./ErrorPage";
-import {loadToken, setToken} from "./Auth";
 import Login from "./Login";
+import CheckAuth from "./CheckAuth";
 
 function App() {
     const [settings, setSettings] = useState({});
     const [themes, setThemes] = useState([]);
-    const [auth, setAuth] = useState(loadToken());
+    const [authData, setAuthData] = useState({loaded: false, data: null});
+    const [readySettings, setReadySettings] = useState(false);
+    const [readyThemes, setReadyThemes] = useState(false);
+    const [readyAuth, setReadyAuth] = useState(false);
+
+    // Load settings
     useEffect(() => {
-        // load themes
-        getThemes().then(
-            res => setThemes(res.data),
-            err => console.error(err)
-        );
-        // load settings
         const s = {};
         getSettingOrSave(s, FONT, FONTS[0]);
         getSettingOrSave(s, FONT_SIZE, 19);
@@ -46,18 +45,8 @@ function App() {
         getSettingOrSave(s, LAYOUT, LAYOUT_AUTO);
         getSettingOrSave(s, JUSTIFY, true);
         setSettings(s);
+        setReadySettings(true);
     }, []);
-
-    useEffect(() => {
-        setToken(auth)
-    }, [auth]);
-
-    useEffect(() => {
-        if (settings[THEME] === undefined) {
-            return;
-        }
-        $("html > body").attr("data-theme", settings[THEME]);
-    }, [settings[THEME]]);
 
     function getSettingOrSave(s, key, def) {
         const value = window.localStorage.getItem(key);
@@ -76,28 +65,90 @@ function App() {
         setSettings({...s});
     }
 
-    if (!Object.keys(settings).length || !themes.length) {
-        return <></>;
+    // Load themes
+    useEffect(() => {
+        getThemes().then(
+            res => {
+                setThemes(res.data);
+                setReadyThemes(true);
+            },
+            err => {
+                console.error(err);
+                setReadyThemes(true);
+            }
+        );
+    }, []);
+
+    useEffect(() => {
+        if (settings[THEME] === undefined) {
+            return;
+        }
+        $("html > body").attr("data-theme", settings[THEME]);
+    }, [settings[THEME]]);
+
+    useEffect(() => {
+        if (readyAuth) {
+            return;
+        }
+        if (!getToken()) {
+            setAuthData(null);
+            setReadyAuth(true);
+            return;
+        }
+        getUserData().then(
+            res => {
+                setAuthData(res.data);
+                setReadyAuth(true);
+            },
+            err => {
+                setAuthData(null);
+                setReadyAuth(true);
+            }
+        );
+    }, [readyAuth]);
+
+    function refreshAuth() {
+        setAuthData(null);
+        setReadyAuth(false);
     }
 
-    if (!auth) {
-        return <Login setAuth={setAuth}/>;
+    // Wait for themes, settings and auth
+    if (!readyAuth || !readySettings || !readyThemes) {
+        return (
+            <div className={"vh-100 vw-100 d-flex justify-content-center align-items-center"}>
+                <div className={"spinner-border"} role={"status"}>
+                    <span className={"sr-only"}>Loading...</span>
+                </div>
+            </div>
+        );
     }
 
     return (
         <BrowserRouter>
             <Routes>
-                <Route index path={"/"} element={<Navigate to="/library/all"/>}/>
-                <Route path={"login"} element={<Login setAuth={setAuth}/>}/>
+                <Route index path={"/"} element={
+                    <Navigate to={"/library/all"}/>
+                }/>
+                <Route path={"login"} element={
+                    <Login login={refreshAuth}/>
+                }/>
                 <Route path={"library/*"} element={
-                    <Library settings={settings} setSetting={setSetting} themes={themes}/>
+                    <CheckAuth auth={authData}>
+                        <Library settings={settings} setSetting={setSetting} themes={themes} logout={refreshAuth}/>
+                    </CheckAuth>
                 }/>
                 <Route path={"books/:id"} element={
-                    <BookElement settings={settings} setSetting={setSetting} themes={themes}>
-                        <BookRenderer/>
-                    </BookElement>
+                    <CheckAuth auth={authData}>
+                        <BookElement settings={settings} setSetting={setSetting} themes={themes}>
+                            <BookRenderer/>
+                        </BookElement>
+                    </CheckAuth>
                 }/>
-                <Route path="*" element={<ErrorPage title="Page not found" name="Home" link="/"/>}/>
+                <Route path={"*"} element={
+                    <CheckAuth auth={authData}>
+                        <ErrorPage title={"Page not found"} name={"Home"} link={"/"}/>
+                    </CheckAuth>
+                }/>
             </Routes>
         </BrowserRouter>
     );

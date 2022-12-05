@@ -11,7 +11,6 @@ import LibraryAll from "./LibraryAll";
 import LibraryShelves from "./LibraryShelves";
 import LibraryNotInShelf from "./LibraryNotInShelf";
 import ErrorPage from "../ErrorPage";
-import {logout} from "../Auth";
 import avatar from "../../images/avatar.png";
 
 function Library(props) {
@@ -23,8 +22,9 @@ function Library(props) {
         setRefresh(refreshRef.current);
     }
 
-    function onLogout(e) {
-        logout();
+    function logout(e) {
+        window.localStorage.removeItem("token");
+        props.logout();
     }
 
     return (
@@ -64,7 +64,7 @@ function Library(props) {
                                 </li>
                                 <li><hr className={"dropdown-divider"}/></li>
                                 <li>
-                                    <span className={"dropdown-item cursor-pointer"} onClick={onLogout}>Sign out</span>
+                                    <span className={"dropdown-item cursor-pointer"} onClick={logout}>Sign out</span>
                                 </li>
                             </ul>
                         </div>

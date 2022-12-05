@@ -1,12 +1,15 @@
+import {useLocation, useNavigate} from "react-router-dom";
 import {useRef} from "react";
 import {toast} from "wc-toast";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {faGoogle, faFacebook, faTwitter} from "@fortawesome/free-brands-svg-icons"
 import image from "../images/login.svg"
 import "../css/login.css"
-import {login} from "./Auth";
+import {login} from "./Api";
 
 function Login(props) {
+    const navigate = useNavigate();
+    const location = useLocation();
     const email = useRef();
     const password = useRef();
 
@@ -17,8 +20,14 @@ function Login(props) {
                 new Promise((resolve, reject) => {
                     login(email.current.value, password.current.value).then(
                         res => {
+                            window.localStorage.setItem("token", res.data.token);
+                            props.login();
+                            if(location.state?.from) {
+                                navigate(location.state.from);
+                            } else {
+                                navigate("/");
+                            }
                             resolve();
-                            props.setAuth(res.data.token);
                         },
                         err => reject()
                     );

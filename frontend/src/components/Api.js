@@ -1,6 +1,5 @@
 import {Book} from "epubjs";
 import axios from "axios";
-import {getToken} from "./Auth";
 
 //export const URL = "http://192.168.1.170:12135/"
 export const URL = "/";
@@ -15,6 +14,24 @@ const formatter = new Intl.NumberFormat(locale, opts);
 
 export function formatReadPercent(page, total) {
     return formatter.format(page / total);
+}
+
+export function getToken() {
+    return window.localStorage.getItem("token");
+}
+
+export async function login(email, password) {
+    return axios.post(
+        `${API_URL}auth/login`,
+        {email, password}
+    );
+}
+
+export async function getUserData() {
+    return axios.get(
+        `${API_URL}users/data`,
+        {headers: {"x-access-token": getToken()}}
+    );
 }
 
 export async function getThemes() {
