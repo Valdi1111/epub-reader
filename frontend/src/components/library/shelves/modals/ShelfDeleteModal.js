@@ -1,20 +1,22 @@
 import {useEffect, useRef} from "react";
-import {deleteBook} from "../Api";
+import {useNavigate} from "react-router-dom";
+import {deleteShelf} from "../../../Api";
 
-function BookDeleteModal(props) {
-    const deleteModal = useRef();
-    const deleteTitle = useRef();
-    const deleteConfirm = useRef();
+function ShelfDeleteModal(props) {
+    const deleteShelfModal = useRef();
+    const deleteShelfName = useRef();
+    const deleteShelfConfirm = useRef();
+    const navigate = useNavigate();
 
     useEffect(() => {
-        deleteModal.current.addEventListener("show.bs.modal", (e) => {
+        deleteShelfModal.current.addEventListener("show.bs.modal", (e) => {
             const id = e.relatedTarget.getAttribute("data-bs-id");
-            deleteTitle.current.textContent = e.relatedTarget.getAttribute("data-bs-title");
-            deleteConfirm.current.onclick = () => {
-                deleteBook(id).then(
+            deleteShelfName.current.textContent = e.relatedTarget.getAttribute("data-bs-name");
+            deleteShelfConfirm.current.onclick = () => {
+                deleteShelf(id).then(
                     res => {
-                        console.log("Book", id, "Deleted successfully!");
                         props.refresh();
+                        navigate(`/library/shelves`);
                     },
                     err => console.error(err)
                 );
@@ -23,17 +25,17 @@ function BookDeleteModal(props) {
     }, []);
 
     return (
-        <div className={"modal fade"} id={"delete-modal"} tabIndex={-1} aria-labelledby={"delete-modal-label"}
-             aria-hidden={true} ref={deleteModal}>
+        <div className={"modal fade"} id={"delete-shelf-modal"} tabIndex={-1}
+             aria-labelledby={"delete-shelf-modal-label"} aria-hidden={true} ref={deleteShelfModal}>
             <div className={"modal-dialog"}>
                 <div className={"modal-content"}>
                     <div className={"modal-header"}>
-                        <h5 className={"modal-title"} id={"delete-modal-label"}>Confirm book deletion</h5>
+                        <h5 className={"modal-title"} id={"delete-shelf-modal-label"}>Confirm shelf deletion</h5>
                         <button type={"button"} className={"btn-close"} data-bs-dismiss={"modal"} aria-label={"Close"}/>
                     </div>
                     <div className={"modal-body"}>
-                        <h6 ref={deleteTitle}>...</h6>
-                        <p className={"mb-0"}>Are you sure you want to delete this book?</p>
+                        <h6 ref={deleteShelfName}>...</h6>
+                        <p className={"mb-0"}>Are you sure you want to delete this shelf?</p>
                         <p>This process cannot be undone.</p>
                     </div>
                     <div className={"modal-footer"}>
@@ -41,7 +43,7 @@ function BookDeleteModal(props) {
                             Close
                         </button>
                         <button type={"button"} className={"btn btn-primary"} data-bs-dismiss="modal"
-                                ref={deleteConfirm}>
+                                ref={deleteShelfConfirm}>
                             Confirm
                         </button>
                     </div>
@@ -52,4 +54,4 @@ function BookDeleteModal(props) {
 
 }
 
-export default BookDeleteModal;
+export default ShelfDeleteModal;

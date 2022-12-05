@@ -1,5 +1,5 @@
 import {useEffect, useRef} from "react";
-import {editShelf} from "../Api";
+import {editShelf} from "../../../Api";
 
 function ShelfEditModal(props) {
     const editShelfModal = useRef();

@@ -1,5 +1,5 @@
 import {useEffect, useRef} from "react";
-import {COVERS_URL, getBookMetadata} from "../Api";
+import {COVERS_URL, getBookMetadata} from "../../Api";
 
 function BookInfoModal() {
     const infoModal = useRef();
