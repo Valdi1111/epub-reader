@@ -30,8 +30,7 @@ async function getBooksInShelf(id) {
                 bm.creator,
                 bc.cover,
                 br.page,
-                bc.total,
-                br.read
+                bc.total
          FROM book b
                   INNER JOIN book_cache bc on b.id = bc.id
                   INNER JOIN book_metadata bm on b.id = bm.id

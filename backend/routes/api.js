@@ -13,4 +13,11 @@ router.use("/books", protect, books);
 router.use("/shelves", protect, shelves);
 router.use("/find-new", protect, find);
 
+/* Error handler middleware */
+router.use((err, req, res, next) => {
+    const statusCode = err.statusCode || 500;
+    console.error(err.stack);
+    res.status(statusCode).json({ message: err.message });
+});
+
 module.exports = router;

@@ -108,4 +108,32 @@ router.put(
     }
 );
 
+router.put(
+    "/mark-read",
+    async (req, res, next) => {
+        try {
+            const {id} = req.params;
+            await cache.read(id);
+            res.send();
+        } catch (err) {
+            console.error("Error on PUT /books/:id/cache/mark-read.");
+            next(err);
+        }
+    }
+);
+
+router.put(
+    "/mark-unread",
+    async (req, res, next) => {
+        try {
+            const {id} = req.params;
+            await cache.unread(id);
+            res.send();
+        } catch (err) {
+            console.error("Error on PUT /books/:id/cache/mark-unread.");
+            next(err);
+        }
+    }
+);
+
 module.exports = router;

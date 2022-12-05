@@ -23,10 +23,10 @@ function SettingsSpacing(props) {
                 <div className={"input-group"}>
                     <input id={"input-spacing"} className={"form-control"} type={"number"} disabled={true}
                            defaultValue={settings[SPACING]} step={0.05} min={1.00}/>
-                    <button className={"btn btn-outline-danger"} onClick={e => spacing(e, false)}>
+                    <button className={"btn btn-outline-danger btn-icon"} onClick={e => spacing(e, false)}>
                         <FontAwesomeIcon icon={faMinus}/>
                     </button>
-                    <button className={"btn btn-outline-success"} onClick={e => spacing(e, true)}>
+                    <button className={"btn btn-outline-success btn-icon"} onClick={e => spacing(e, true)}>
                         <FontAwesomeIcon icon={faPlus}/>
                     </button>
                 </div>

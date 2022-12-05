@@ -23,10 +23,10 @@ function SettingsWidth(props) {
                 <div className={"input-group"}>
                     <input id={"input-width"} className={"form-control"} type={"number"} disabled={true}
                            defaultValue={settings[WIDTH]} step={100} min={0}/>
-                    <button className={"btn btn-outline-danger"} onClick={e => width(e, false)}>
+                    <button className={"btn btn-outline-danger btn-icon"} onClick={e => width(e, false)}>
                         <FontAwesomeIcon icon={faMinus}/>
                     </button>
-                    <button className={"btn btn-outline-success"} onClick={e => width(e, true)}>
+                    <button className={"btn btn-outline-success btn-icon"} onClick={e => width(e, true)}>
                         <FontAwesomeIcon icon={faPlus}/>
                     </button>
                 </div>

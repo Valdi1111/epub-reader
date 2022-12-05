@@ -44,7 +44,7 @@ async function locations(id, locations, total) {
     const [results,] = await db.promise().query(
         `UPDATE book_cache c
          SET c.locations = ?,
-             c.total = ?
+             c.total     = ?
          WHERE c.id = ?`,
         [locations, total, id]
     );
@@ -73,6 +73,28 @@ async function positionNull(id) {
     return results;
 }
 
+async function read(id) {
+    const [results,] = await db.promise().query(
+        `UPDATE book_current c
+         SET c.position = NULL,
+             c.page     = -1
+         WHERE c.id = ?`,
+        [id]
+    );
+    return results;
+}
+
+async function unread(id) {
+    const [results,] = await db.promise().query(
+        `UPDATE book_current c
+         SET c.position = NULL,
+             c.page     = 0
+         WHERE c.id = ?`,
+        [id]
+    );
+    return results;
+}
+
 module.exports = {
     cover,
     coverNull,
@@ -80,5 +102,7 @@ module.exports = {
     chapters,
     locations,
     position,
-    positionNull
+    positionNull,
+    read,
+    unread
 }

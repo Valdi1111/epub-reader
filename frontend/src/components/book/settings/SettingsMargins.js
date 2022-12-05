@@ -23,10 +23,10 @@ function SettingsMargins(props) {
                 <div className={"input-group"}>
                     <input id={"input-margins"} className={"form-control"} type={"number"} disabled={true}
                            defaultValue={settings[MARGINS]} step={20} min={0}/>
-                    <button className={"btn btn-outline-danger"} onClick={e => margins(e, false)}>
+                    <button className={"btn btn-outline-danger btn-icon"} onClick={e => margins(e, false)}>
                         <FontAwesomeIcon icon={faMinus}/>
                     </button>
-                    <button className={"btn btn-outline-success"} onClick={e => margins(e, true)}>
+                    <button className={"btn btn-outline-success btn-icon"} onClick={e => margins(e, true)}>
                         <FontAwesomeIcon icon={faPlus}/>
                     </button>
                 </div>

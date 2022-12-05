@@ -4,6 +4,7 @@ const cors = require("cors");
 
 const apiRoute = require("./routes/api");
 const express = require("express");
+const fs = require("fs");
 const app = express();
 
 app.use(cors())
@@ -13,17 +14,15 @@ app.use(express.urlencoded({extended: false}));
 app.use("/api/v1", apiRoute);
 app.use("/epub", express.static(process.env.EPUB_FOLDER));
 app.use("/themes", express.static(path.join(__dirname, "themes")));
-app.use("/covers", express.static(path.join(__dirname, "covers")));
-app.use("/", express.static(path.join(__dirname, "public")));
-app.get('*', (req,res) => {
-    res.sendFile(path.join(__dirname, "public/index.html"));
+//app.use("/covers", express.static(path.join(__dirname, "covers")));
+app.get("/covers/:id", (req, res) => {
+    // Using send file to fix auto downloading
+    res.contentType("image/jpeg");
+    res.sendFile(path.join(__dirname, "covers",req.params.id));
 });
-
-/* Error handler middleware */
-app.use((err, req, res, next) => {
-    const statusCode = err.statusCode || 500;
-    console.error(err.stack);
-    res.status(statusCode).json({ message: err.message });
+app.use("/", express.static(path.join(__dirname, "public")));
+app.get((req,res) => {
+    res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 module.exports = app;

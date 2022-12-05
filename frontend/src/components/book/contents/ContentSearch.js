@@ -1,5 +1,7 @@
 import {useEffect, useState} from "react";
 import $ from "jquery";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faArrowRight, faPlus, faSearch} from "@fortawesome/free-solid-svg-icons";
 
 function ContentSearch(props) {
     const {navigateTo, search} = props;
@@ -10,16 +12,21 @@ function ContentSearch(props) {
         s.keydown(e => {
             let code = e.keyCode || e.which;
             if (code === 13) {
-                if (!s.val()) {
-                    setSearchResults([]);
-                    return;
-                }
-                const searchType = $("input[name='search-type']:checked");
-                const promise = search(s.val(), searchType.val() === "all");
-                promise.then(result => setSearchResults(result));
+                goSearch();
             }
         });
     }, []);
+
+    function goSearch() {
+        const s = $("#search");
+        if (!s.val()) {
+            setSearchResults([]);
+            return;
+        }
+        const searchType = $("input[name='search-type']:checked");
+        const promise = search(s.val(), searchType.val() === "all");
+        promise.then(result => setSearchResults(result));
+    }
 
     function SearchItem(props) {
         const {i} = props
@@ -34,7 +41,12 @@ function ContentSearch(props) {
     return (
         <>
             <div className={"dropdown-header py-0 px-2"}>
-                <input className={"form-control mb-1"} id={"search"} type="text" placeholder={"Search"}/>
+                <div className={"input-group mb-1"}>
+                    <input className={"form-control"} id={"search"} type="text" placeholder={"Search"}/>
+                    <button className={"btn btn-outline-success btn-icon"} onClick={goSearch}>
+                        <FontAwesomeIcon icon={faArrowRight}/>
+                    </button>
+                </div>
                 <div className="form-check form-check-inline">
                     <input className={"form-check-input"} name={"search-type"} type={"radio"} value={"all"}
                            defaultChecked={true}/>

@@ -37,7 +37,7 @@ function Library(props) {
             <div className={"d-flex flex-column min-vh-100"}>
                 <div className={"sticky-top border-bottom bg-body"}>
                     <div className={"d-flex align-items-center justify-content-between p-2"} style={{height: "60px"}}>
-                        <button type={"button"} className={"btn-normal d-md-none btn btn-outline-secondary"}
+                        <button type={"button"} className={"btn-icon d-md-none btn btn-outline-secondary"}
                                 data-bs-toggle={"collapse"} data-bs-target={"#top-nav"} aria-controls={"top-nav"}
                                 aria-expanded={false} aria-label={"Toggle navigation"}>
                             <FontAwesomeIcon icon={faBars} width={16} height={16}/>

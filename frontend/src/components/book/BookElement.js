@@ -98,8 +98,9 @@ function BookElement(props) {
         }
         rendition.on("relocated", updatePage);
         rendition.on("keydown", onKeyDown);
+        // Open image view modal when clicking on img or image tag
         rendition.on("click", e => {
-            if (e.target.tagName.toLowerCase() === 'img') {
+            if (e.target.tagName.toLowerCase() === "img" || e.target.tagName.toLowerCase() === "image") {
                 const modal = new bootstrap.Modal(document.getElementById("image-view-modal"));
                 modal.show(e.target);
             }

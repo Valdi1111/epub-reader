@@ -115,6 +115,20 @@ export async function deleteBook(id) {
     );
 }
 
+export async function markRead(id) {
+    return await axios.put(
+        `${API_URL}books/${id}/cache/mark-read`, {},
+        {headers: {"x-access-token": getToken()}}
+    );
+}
+
+export async function markUnread(id) {
+    return await axios.put(
+        `${API_URL}books/${id}/cache/mark-unread`, {},
+        {headers: {"x-access-token": getToken()}}
+    );
+}
+
 export async function createBook(url) {
     console.log("Creating book from link...");
     const epub = new Book(EPUB_URL + url);

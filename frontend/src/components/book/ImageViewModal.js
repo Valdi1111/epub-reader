@@ -10,8 +10,13 @@ function ImageViewModal() {
             const t = e.relatedTarget;
             imageViewImg.current.style.width = "100%";
             imageViewWidth.current.value = 100;
-            imageViewImg.current.alt = t.alt;
-            imageViewImg.current.src = t.src;
+            if (t.tagName === "img") {
+                imageViewImg.current.alt = t.alt;
+                imageViewImg.current.src = t.src;
+            }
+            if (t.tagName === "image") {
+                imageViewImg.current.src = t.getAttribute("xlink:href");
+            }
         });
     }, []);
 

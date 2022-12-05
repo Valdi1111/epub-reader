@@ -9,7 +9,6 @@ async function getAll() {
                 bc.cover,
                 br.page,
                 bc.total,
-                br.read,
                 (SELECT s.id FROM shelf s WHERE b.url LIKE CONCAT(s.path, ?)) AS shelf
          FROM book b
                   INNER JOIN book_cache bc
@@ -38,8 +37,7 @@ async function getNotInShelf() {
                     bm.creator,
                     bc.cover,
                     br.page,
-                    bc.total,
-                    br.read
+                    bc.total
              FROM book b
                       INNER JOIN book_cache bc ON b.id = bc.id
                       INNER JOIN book_metadata bm ON b.id = bm.id
@@ -56,8 +54,7 @@ async function getNotInShelf() {
                 bm.creator,
                 bc.cover,
                 br.page,
-                bc.total,
-                br.read
+                bc.total
          FROM book b
                   INNER JOIN book_cache bc ON b.id = bc.id
                   INNER JOIN book_metadata bm ON b.id = bm.id
