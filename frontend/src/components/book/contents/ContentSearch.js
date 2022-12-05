@@ -24,7 +24,7 @@ function ContentSearch(props) {
     function SearchItem(props) {
         const {i} = props
         return (
-            <li className={"dropdown-item"} onClick={e => navigateTo(i.cfi)}>
+            <li className={"dropdown-item px-2"} onClick={e => navigateTo(i.cfi)}>
                 <p className={"text-wrap text-muted mb-0"} style={{fontSize: "85%"}}>{i.chapter}</p>
                 <span className={"text-wrap"}>{i.excerpt}</span>
             </li>
@@ -33,7 +33,7 @@ function ContentSearch(props) {
 
     return (
         <>
-            <div className={"dropdown-header pt-1 pb-0"}>
+            <div className={"dropdown-header py-0 px-2"}>
                 <input className={"form-control mb-1"} id={"search"} type="text" placeholder={"Search"}/>
                 <div className="form-check form-check-inline">
                     <input className={"form-check-input"} name={"search-type"} type={"radio"} value={"all"}
@@ -45,10 +45,10 @@ function ContentSearch(props) {
                     <label className={"form-check-label"}>Current chapter</label>
                 </div>
             </div>
-            <ul className={"list-unstyled overflow-auto mb-1"} style={{maxHeight: "500px"}}>
+            <ul className={"list-unstyled overflow-auto mb-1"} style={{maxHeight: "400px"}}>
                 {searchResults.map(i => <SearchItem key={i.cfi} i={i}/>)}
             </ul>
-            <span className={"dropdown-header text-muted py-0"}>{searchResults.length + " results"}</span>
+            <span className={"dropdown-header text-muted py-0 px-2"}>{searchResults.length + " results"}</span>
         </>
     );
 

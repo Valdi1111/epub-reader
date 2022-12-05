@@ -25,7 +25,7 @@ function ContentToc(props) {
             <>
                 <li className={"cursor-pointer"}>
                     <span className={`dropdown-item text-truncate ${active(i.label)}`} title={i.label}
-                          onClick={e => goToItem(i)} style={{padding: `0.25rem ${level}rem`}}>
+                          onClick={e => goToItem(i)} style={{padding: `0.25rem ${level}.5rem`}}>
                         {i.label}
                     </span>
                 </li>
@@ -35,8 +35,8 @@ function ContentToc(props) {
     }
 
     return (
-        <ul className={"list-unstyled overflow-auto mb-0"} style={{maxHeight: "600px"}}>
-            {navigation.map(i => <TocItem key={i.id} i={i} level={1}/>)}
+        <ul className={"list-unstyled overflow-auto mb-0"} style={{maxHeight: "500px"}}>
+            {navigation.map(i => <TocItem key={i.id} i={i} level={0}/>)}
         </ul>
     );
 
