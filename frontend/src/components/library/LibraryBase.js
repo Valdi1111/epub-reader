@@ -1,22 +1,15 @@
 import {useEffect, useState} from "react";
-import $ from "jquery";
-import {getNotInShelf} from "../Api";
 import LibraryItem from "./LibraryItem";
 import LibraryItemAdder from "./LibraryItemAdder";
 
-function LibraryNotInShelf(props) {
-    const {refresh} = props;
+function LibraryBase(props) {
+    const {refresh, provider} = props;
     const [allBooks, setAllBooks] = useState([]);
     const [books, setBooks] = useState([]);
     const [page, setPage] = useState(1);
 
     useEffect(() => {
-        $("nav.nav-pills > .nav-link").removeClass("active");
-        $("nav.nav-pills > .nav-link:nth-child(4)").addClass("active");
-    }, []);
-
-    useEffect(() => {
-        getNotInShelf().then(
+        provider().then(
             res => {
                 setAllBooks(res.data);
                 setBooks(res.data.slice(0, 20));
@@ -24,7 +17,7 @@ function LibraryNotInShelf(props) {
             },
             err => console.error(err)
         );
-    }, [refresh]);
+    }, [refresh, provider]);
 
     useEffect(() => {
         if (page === 1) {
@@ -34,8 +27,8 @@ function LibraryNotInShelf(props) {
     }, [page]);
 
     return (
-        <div className={"flex-grow-1"}>
-            <div className={"row mx-0"}>
+        <div className={"scroll-pane flex-grow-1"}>
+            <div className={"scroll-pane-inner row mx-0"}>
                 {books.map(b =>
                     <div className={"col-auto p-2"} key={b.id}>
                         <LibraryItem book={b}/>
@@ -48,4 +41,4 @@ function LibraryNotInShelf(props) {
 
 }
 
-export default LibraryNotInShelf;
+export default LibraryBase;

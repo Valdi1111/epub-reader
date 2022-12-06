@@ -1,28 +1,33 @@
-import {useEffect, useRef} from "react";
+import {useEffect, useRef, useState} from "react";
 import {editShelf} from "../../../Api";
 
 function ShelfEditModal(props) {
-    const editShelfModal = useRef();
-    const editShelfPath = useRef();
-    const editShelfName = useRef();
-    const editShelfConfirm = useRef();
+    const [id, setId] = useState(null);
+    const path = useRef();
+    const name = useRef();
+    const modal = useRef();
 
     useEffect(() => {
-        editShelfModal.current.addEventListener("show.bs.modal", (e) => {
-            const id = e.relatedTarget.getAttribute("data-bs-id");
-            editShelfPath.current.value = e.relatedTarget.getAttribute("data-bs-path");
-            editShelfName.current.value = e.relatedTarget.getAttribute("data-bs-name");
-            editShelfConfirm.current.onclick = () => {
-                const path = editShelfPath.current.value;
-                const name = editShelfName.current.value;
-                editShelf(id, path, name).then(res => props.refresh(), err => console.error(err));
-            };
+        modal.current.addEventListener("show.bs.modal", (e) => {
+            setId(e.relatedTarget.getAttribute("data-bs-id"));
+            path.current.value = e.relatedTarget.getAttribute("data-bs-path");
+            name.current.value = e.relatedTarget.getAttribute("data-bs-name");
         });
     }, []);
 
+    function confirm() {
+        if (id === null) {
+            return;
+        }
+        editShelf(id, path.current.value, name.current.value).then(
+            res => props.refresh(),
+            err => console.error(err)
+        );
+    }
+
     return (
         <div className={"modal fade"} id={"edit-shelf-modal"} tabIndex={-1} aria-labelledby={"edit-shelf-modal-label"}
-             aria-hidden={true} ref={editShelfModal}>
+             aria-hidden={true} ref={modal}>
             <div className={"modal-dialog"}>
                 <div className={"modal-content"}>
                     <div className={"modal-header"}>
@@ -32,7 +37,7 @@ function ShelfEditModal(props) {
                     <div className={"modal-body"}>
                         <div className="mb-2">
                             <label htmlFor="edit-path" className="form-label">Path</label>
-                            <input ref={editShelfPath} type="text" className="form-control" id="edit-path"
+                            <input ref={path} type="text" className="form-control" id="edit-path"
                                    aria-describedby="edit-path-help"/>
                             <div id="edit-path-help" className="form-text">Insert a folder without the / at the
                                 end.
@@ -40,15 +45,14 @@ function ShelfEditModal(props) {
                         </div>
                         <div className="mb-2">
                             <label htmlFor="edit-name" className="form-label">Name</label>
-                            <input ref={editShelfName} type="text" className="form-control" id="edit-name"/>
+                            <input ref={name} type="text" className="form-control" id="edit-name"/>
                         </div>
                     </div>
                     <div className={"modal-footer"}>
-                        <button type={"button"} className={"btn btn-secondary"} data-bs-dismiss="modal">
+                        <button type={"button"} className={"btn btn-danger"} data-bs-dismiss="modal">
                             Close
                         </button>
-                        <button type={"button"} className={"btn btn-primary"} data-bs-dismiss="modal"
-                                ref={editShelfConfirm}>
+                        <button type={"button"} className={"btn btn-primary"} data-bs-dismiss="modal" onClick={confirm}>
                             Update
                         </button>
                     </div>

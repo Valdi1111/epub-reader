@@ -83,7 +83,7 @@ function App() {
         if (settings[THEME] === undefined) {
             return;
         }
-        $("html > body").attr("data-theme", settings[THEME]);
+        $("html").attr("data-theme", settings[THEME]);
     }, [settings[THEME]]);
 
     useEffect(() => {

@@ -10,34 +10,9 @@
     "css": "sepia.css"
   },
   {
-    "theme": "gray",
-    "name": "Gray",
-    "css": "gray.css"
-  },
-  {
     "theme": "dark",
     "name": "Dark",
     "css": "dark.css"
-  },
-  {
-    "theme": "solarized_light",
-    "name": "Solarized Light",
-    "css": "solarized_light.css"
-  },
-  {
-    "theme": "solarized_dark",
-    "name": "Solarized Dark",
-    "css": "solarized_dark.css"
-  },
-  {
-    "theme": "gruvbox_light",
-    "name": "Gruvbox Light",
-    "css": "gruvbox_light.css"
-  },
-  {
-    "theme": "gruvbox_dark",
-    "name": "Gruvbox Dark",
-    "css": "gruvbox_dark.css"
   },
   {
     "theme": "nord",

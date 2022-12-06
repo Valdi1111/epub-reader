@@ -1,32 +1,36 @@
-import {useEffect, useRef} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {deleteShelf} from "../../../Api";
 
 function ShelfDeleteModal(props) {
-    const deleteShelfModal = useRef();
-    const deleteShelfName = useRef();
-    const deleteShelfConfirm = useRef();
+    const [id, setId] = useState(null);
+    const [name, setName] = useState("...");
+    const modal = useRef();
     const navigate = useNavigate();
 
     useEffect(() => {
-        deleteShelfModal.current.addEventListener("show.bs.modal", (e) => {
-            const id = e.relatedTarget.getAttribute("data-bs-id");
-            deleteShelfName.current.textContent = e.relatedTarget.getAttribute("data-bs-name");
-            deleteShelfConfirm.current.onclick = () => {
-                deleteShelf(id).then(
-                    res => {
-                        props.refresh();
-                        navigate(`/library/shelves`);
-                    },
-                    err => console.error(err)
-                );
-            };
+        modal.current.addEventListener("show.bs.modal", (e) => {
+            setId(e.relatedTarget.getAttribute("data-bs-id"));
+            setName(e.relatedTarget.getAttribute("data-bs-name"));
         });
     }, []);
 
+    function confirm() {
+        if (id === null) {
+            return;
+        }
+        deleteShelf(id).then(
+            res => {
+                props.refresh();
+                navigate(`/library/shelves`);
+            },
+            err => console.error(err)
+        );
+    }
+
     return (
         <div className={"modal fade"} id={"delete-shelf-modal"} tabIndex={-1}
-             aria-labelledby={"delete-shelf-modal-label"} aria-hidden={true} ref={deleteShelfModal}>
+             aria-labelledby={"delete-shelf-modal-label"} aria-hidden={true} ref={modal}>
             <div className={"modal-dialog"}>
                 <div className={"modal-content"}>
                     <div className={"modal-header"}>
@@ -34,16 +38,15 @@ function ShelfDeleteModal(props) {
                         <button type={"button"} className={"btn-close"} data-bs-dismiss={"modal"} aria-label={"Close"}/>
                     </div>
                     <div className={"modal-body"}>
-                        <h6 ref={deleteShelfName}>...</h6>
+                        <h6>{name}</h6>
                         <p className={"mb-0"}>Are you sure you want to delete this shelf?</p>
                         <p>This process cannot be undone.</p>
                     </div>
                     <div className={"modal-footer"}>
-                        <button type={"button"} className={"btn btn-secondary"} data-bs-dismiss="modal">
+                        <button type={"button"} className={"btn btn-danger"} data-bs-dismiss="modal">
                             Close
                         </button>
-                        <button type={"button"} className={"btn btn-primary"} data-bs-dismiss="modal"
-                                ref={deleteShelfConfirm}>
+                        <button type={"button"} className={"btn btn-primary"} data-bs-dismiss="modal" onClick={confirm}>
                             Confirm
                         </button>
                     </div>

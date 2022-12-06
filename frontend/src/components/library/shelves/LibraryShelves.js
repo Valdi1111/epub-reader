@@ -1,6 +1,5 @@
 import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import $ from "jquery";
 import {getShelves, getBooksInShelf} from "../../Api";
 import ShelfAddModal from "./modals/ShelfAddModal";
 import ShelfEditModal from "./modals/ShelfEditModal";
@@ -15,11 +14,6 @@ function LibraryShelves(props) {
     const [shelves, setShelves] = useState([]);
     const [books, setBooks] = useState([]);
     const navigate = useNavigate();
-
-    useEffect(() => {
-        $("nav.nav-pills > .nav-link").removeClass("active");
-        $("nav.nav-pills > .nav-link:nth-child(3)").addClass("active");
-    }, []);
 
     // refresh shelves on parent delete (for badge number)
     useEffect(() => {
@@ -76,7 +70,7 @@ function LibraryShelves(props) {
                             {shelves.map(s => <ShelfItem key={s.id} shelf={s} active={s.id == id}/>)}
                         </ul>
                     </div>
-                    <div className={"d-flex flex-row p-2"}>
+                    <div className={"d-flex flex-row border-top p-2"}>
                         <ShelfButtons shelf={shelves.filter(s => s.id == id)[0]} active={id !== undefined}/>
                     </div>
                 </div>

@@ -3,9 +3,20 @@ import {THEME} from "../Settings";
 
 function ThemeChangeModal(props) {
 
-    function changeTheme(e) {
-        const theme = $("input[name='select-theme']:checked");
+    function confirm() {
+        const theme = $("div.modal-body input[name='select-theme']:checked");
         props.setSetting(THEME, theme.val());
+    }
+
+    function Theme(t) {
+        const {theme, name} = t;
+        return (
+            <div className={"form-check"}>
+                <input className={"form-check-input"} type={"radio"} id={"theme-" + theme} name={"select-theme"}
+                       defaultChecked={props.settings[THEME] === theme} value={theme}/>
+                <label className={"w-100 form-check-label"} htmlFor={"theme-" + theme}>{name}</label>
+            </div>
+        );
     }
 
     return (
@@ -19,23 +30,13 @@ function ThemeChangeModal(props) {
                                 aria-label={"Close"}/>
                     </div>
                     <div className={"modal-body"}>
-                        {props.themes.map(t =>
-                            <div className={"form-check"} key={t.theme}>
-                                <input className={"form-check-input"} type={"radio"} id={"select-theme-" + t.theme}
-                                       defaultChecked={props.settings[THEME] === t.theme} name={"select-theme"}
-                                       value={t.theme}/>
-                                <label className={"w-100 form-check-label"} htmlFor={"select-theme-" + t.theme}>
-                                    {t.name}
-                                </label>
-                            </div>
-                        )}
+                        {props.themes.map(t => <Theme key={t.theme} theme={t.theme} name={t.name}/>)}
                     </div>
                     <div className={"modal-footer"}>
-                        <button type={"button"} className={"btn btn-secondary"} data-bs-dismiss="modal">
+                        <button type={"button"} className={"btn btn-danger"} data-bs-dismiss="modal">
                             Close
                         </button>
-                        <button type={"button"} className={"btn btn-primary"} data-bs-dismiss="modal"
-                                onClick={changeTheme}>
+                        <button type={"button"} className={"btn btn-primary"} data-bs-dismiss="modal" onClick={confirm}>
                             Confirm
                         </button>
                     </div>

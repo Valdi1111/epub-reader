@@ -2,19 +2,19 @@
 @import "node_modules/bootstrap/scss/variables";
 @import "node_modules/bootstrap/scss/mixins";
 
-html[data-theme="sepia"] {
+html[data-theme="light"] {
   //$enable-gradients: true;
 
-  $body-bg: #efe7dd;
-  $body-bg-rgb: 239, 231, 221;
-  $body-color: darken($body-bg, 50%);
+  $body-bg: #efefef;
+  $body-bg-rgb: 239, 239, 239;
+  $body-color: darken($body-bg, 80%);
   $border-color: darken($body-bg, 20%);
   $input-bg: darken($body-bg, 10%);
   $active-gradient: 15%;
 
   $theme-colors: (
           "primary": $primary,
-          "secondary": darken($body-bg, 35%),
+          "secondary": $secondary,
           "success": $success,
           "danger": $danger,
           "info": $indigo,

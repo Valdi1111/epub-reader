@@ -1,0 +1,81 @@
+
+/* Btn close */
+
+$btn-close-color: $body-color;
+$btn-close-bg: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='#{$btn-close-color}'><path d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/></svg>");
+
+/* Card */
+
+$card-bg: $body-bg;
+$card-color: $body-color;
+$card-border-color: $border-color;
+
+/* Input */
+
+//$input-bg: $body-bg;
+$input-color: $body-color;
+$input-border-color: $border-color;
+$input-disabled-bg: $input-bg;
+$input-focus-bg: $input-bg;
+$input-focus-color: $input-color;
+
+/* Form select */
+
+$form-select-bg: $input-bg;
+$form-select-color: $input-color;
+$form-select-border-color: $input-border-color;
+$form-select-disabled-bg: $input-disabled-bg;
+$form-select-indicator-color: $form-select-border-color;
+$form-select-indicator: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='none' stroke='#{$form-select-indicator-color}' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/></svg>");
+
+
+/* Form check */
+
+$form-check-input-bg: $input-bg;
+$form-check-label-color: $input-color;
+$form-check-input-border: 1px solid $input-border-color;
+
+/* Input group */
+
+$input-group-addon-bg: $input-bg;
+$input-group-addon-color: $input-color;
+$input-group-addon-border-color: $input-border-color;
+
+/* Form file */
+
+$form-file-button-bg: $input-bg;
+$form-file-button-hover-bg: $input-bg;
+$form-file-button-color: $input-color;
+
+/* Form range */
+
+$form-range-track-bg: $input-bg;
+
+/* Modal */
+
+$modal-content-bg: $body-bg;
+$modal-content-color: $body-color;
+$modal-content-border-color: $border-color;
+$modal-header-border-color: $border-color;
+$modal-footer-border-color: $border-color;
+
+/* List group */
+
+$list-group-bg: $body-bg;
+$list-group-color: $body-color;
+$list-group-border-color: $border-color;
+$list-group-active-bg: darken($list-group-bg, $active-gradient);
+$list-group-active-color: darken($list-group-color, 5%);
+$list-group-active-border-color: $border-color;
+
+/* Dropdown */
+
+$dropdown-bg: $body-bg;
+$dropdown-color: $body-color;
+$dropdown-border-color: $border-color;
+
+$dropdown-link-color: $body-color;
+$dropdown-link-active-bg: darken($dropdown-bg, $active-gradient);
+$dropdown-link-active-color: darken($dropdown-link-color, 5%);
+$dropdown-link-hover-bg: $dropdown-link-active-bg;
+$dropdown-link-hover-color: $dropdown-link-active-color;

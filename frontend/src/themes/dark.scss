@@ -2,23 +2,24 @@
 @import "node_modules/bootstrap/scss/variables";
 @import "node_modules/bootstrap/scss/mixins";
 
-nav, body[data-theme="dark"] {
-  $enable-gradients: true;
+html[data-theme="dark"] {
+  //$enable-gradients: true;
 
-  /* redefine theme colors for dark theme */
-  /*$primary: #012345;
-  $secondary: #111111;
-  $success: #222222;
-  $dark: #000;*/
+  $body-bg: #292929;
+  $body-bg-rgb: 41, 41, 41;
+  $body-color: #dedede;
+  $border-color: lighten($body-bg, 10%);
+  $input-bg: darken($body-bg, 3%);
+  $active-gradient: 5%;
 
   $theme-colors: (
           "primary": $primary,
-          "secondary": $secondary,
+          "secondary": lighten($body-bg, 20%),
           "success": $success,
           "danger": $danger,
           "info": $indigo,
           "dark": $dark,
-          "light": #aaa,
+          "light": $light,
   );
 
   /* redefine theme color variables */
@@ -32,78 +33,11 @@ nav, body[data-theme="dark"] {
     --#{$variable-prefix}#{$color}-rgb: #{$value};
   }
 
-  $body-bg: #292929;
-  $body-bg-rgb: 41, 41, 41;
-  $body-color: #dedede;
-  $border-color: lighten($body-bg, 10%);
-  $disabled-bg: darken($body-bg, 5%);
-
-  $btn-close-color: $body-color;
-  $btn-close-bg: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='#{$btn-close-color}'><path d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/></svg>");
-
-  $card-bg: $body-bg;
-  $card-color: $body-color;
-  $card-border-color: rgba($white, .125);
-
-  $input-bg: $body-bg;
-  $input-color: $body-color;
-  $input-border-color: $border-color;
-  $input-focus-bg: $input-bg;
-  $input-focus-color: $input-color;
-  $input-disabled-bg: $disabled-bg;
-
-  $form-select-bg: $body-bg;
-  $form-select-color: $body-color;
-  $form-select-border-color: $border-color;
-  $form-select-disabled-bg: $disabled-bg;
-
-  $form-check-input-bg: $body-bg;
-  $form-check-label-color: $body-color;
-  $form-check-input-border: 1px solid $border-color;
-
-  $input-group-addon-bg: $body-bg;
-  $input-group-addon-color: $body-color;
-  $input-group-addon-border-color: $border-color;
-
-  $form-file-button-bg: $body-bg;
-  $form-file-button-hover-bg: $body-bg;
-  $form-file-button-color: $body-color;
-
-  $form-range-track-bg: $border-color;
-
-  $modal-content-bg: $body-bg;
-  $modal-content-color: $body-color;
-  $modal-content-border-color: $border-color;
-  $modal-header-border-color: $border-color;
-  $modal-footer-border-color: $border-color;
-
-  $list-group-bg: $body-bg;
-  $list-group-color: $body-color;
-  $list-group-border-color: $border-color;
-
-  $dropdown-bg: $body-bg;
-  $dropdown-color: $body-color;
-  $dropdown-border-color: $border-color;
-
-  $dropdown-link-color: $body-color;
-  $dropdown-link-hover-color: darken($dropdown-link-color, 5%);
-  $dropdown-link-hover-bg: darken($dropdown-bg, 5%);
-
   --#{$variable-prefix}body-color: #{$body-color};
   --#{$variable-prefix}body-bg: #{$body-bg};
   --#{$variable-prefix}body-bg-rgb: #{$body-bg-rgb};
 
+  @import "vars";
   @import "node_modules/bootstrap/scss/bootstrap";
-}
-
-body[data-theme="dark"] ::-webkit-scrollbar-corner {
-  background-color: #292929;
-}
-
-body[data-theme="dark"] ::-webkit-scrollbar-thumb {
-  background-color: #3f4447;
-}
-
-body[data-theme="dark"] a, body[data-theme="dark"] a:hover {
-  color: #dedede;
+  @import "index";
 }
