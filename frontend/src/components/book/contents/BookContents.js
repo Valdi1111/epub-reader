@@ -5,7 +5,7 @@ import ContentSearch from "./ContentSearch";
 import {useState} from "react";
 
 function BookContents(props) {
-    const {chapterName, navigation, navigateTo, search} = props;
+    const {chapter, navigation, navigateTo, search} = props;
     const [content, setContent] = useState("toc");
 
     function cntChange(e) {
@@ -14,7 +14,7 @@ function BookContents(props) {
 
     function Content() {
         if(content === "toc") {
-            return <ContentToc chapterName={chapterName} navigation={navigation} navigateTo={navigateTo}/>
+            return <ContentToc chapter={chapter} navigation={navigation} navigateTo={navigateTo}/>
         }
         if(content === "annotations") {
             return <></>

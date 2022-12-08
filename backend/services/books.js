@@ -8,7 +8,7 @@ async function getAll() {
                 bm.creator,
                 bc.cover,
                 br.page,
-                bc.total,
+                JSON_LENGTH(bc.locations) AS total,
                 (SELECT s.id FROM shelf s WHERE b.url LIKE CONCAT(s.path, ?)) AS shelf
          FROM book b
                   INNER JOIN book_cache bc
@@ -37,7 +37,7 @@ async function getNotInShelf() {
                     bm.creator,
                     bc.cover,
                     br.page,
-                    bc.total
+                    JSON_LENGTH(bc.locations) AS total
              FROM book b
                       INNER JOIN book_cache bc ON b.id = bc.id
                       INNER JOIN book_metadata bm ON b.id = bm.id
@@ -54,7 +54,7 @@ async function getNotInShelf() {
                 bm.creator,
                 bc.cover,
                 br.page,
-                bc.total
+                JSON_LENGTH(bc.locations) AS total
          FROM book b
                   INNER JOIN book_cache bc ON b.id = bc.id
                   INNER JOIN book_metadata bm ON b.id = bm.id
@@ -73,7 +73,6 @@ async function getById(id) {
                 bm.title,
                 bc.cover,
                 bc.navigation,
-                bc.chapters,
                 bc.locations,
                 br.position,
                 br.page

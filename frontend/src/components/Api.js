@@ -142,7 +142,6 @@ export async function createBook(url) {
     await saveCover(id, book);
     await saveLocations(id, book);
     await saveNavigation(id, book);
-    await saveChapters(id, book);
     return id;
 }
 
@@ -153,7 +152,6 @@ export async function invalidateCache(url, id) {
     await saveCover(id, book);
     await saveLocations(id, book);
     await saveNavigation(id, book);
-    await saveChapters(id, book);
     return id;
 }
 
@@ -183,11 +181,11 @@ async function saveCover(id, book) {
 
 async function saveLocations(id, book) {
     console.debug("Book", id, "Generating locations...");
-    await book.locations.generate(1024);
+    const locations = await book.locations.generate(1024);
     console.debug("Book", id, "Saving locations...");
     await axios.put(
         `${API_URL}books/${id}/cache/locations`,
-        {locations: book.locations.save(), total: book.locations.length()},
+        {locations},
         {headers: {"x-access-token": getToken()}}
     );
     console.debug("Book", id, "Locations saved!");
@@ -195,7 +193,7 @@ async function saveLocations(id, book) {
 
 async function saveNavigation(id, book) {
     console.debug("Book", id, "Generating navigation...");
-    let navigation = generateNavigation(book);
+    const navigation = generateNavigation(book, book.navigation);
     console.debug("Book", id, "Saving navigation...");
     await axios.put(
         `${API_URL}books/${id}/cache/navigation`,
@@ -203,18 +201,6 @@ async function saveNavigation(id, book) {
         {headers: {"x-access-token": getToken()}}
     );
     console.debug("Book", id, "Navigation saved!");
-}
-
-async function saveChapters(id, book) {
-    console.debug("Book", id, "Generating chapters...");
-    let chapters = generateChapters(book);
-    console.debug("Book", id, "Saving chapters...");
-    await axios.put(
-        `${API_URL}books/${id}/cache/chapters`,
-        {chapters},
-        {headers: {"x-access-token": getToken()}}
-    );
-    console.debug("Book", id, "Chapters saved!");
 }
 
 export function savePosition(id, position, page) {
@@ -225,39 +211,7 @@ export function savePosition(id, position, page) {
     );
 }
 
-function generateNavigation(book) {
-    // TODO da rimuovere se funziona il nuovo metodo di subchapters
-    /*let navigation = [];
-    book.navigation.forEach(item => {
-        let nav = {};
-        nav["id"] = item.id;
-        nav["label"] = item.label;
-        let dash = "";
-        if(item.href.includes("#")) {
-            dash = "#" + item.href.split('#').pop();
-        }
-        if(item.href === null || item.href === "") {
-            nav["href"] = null;
-        } else if(book.spine.get(item.href) !== null) {
-            nav["href"] = book.spine.get(item.href).href + dash;
-            //console.log("Using first method", nav["href"])
-        } else {
-            nav["href"] = book.spine.get("Text/" + item.href.split('/').pop()).href + dash;
-            //console.log("Using second method", nav["href"])
-        }
-        console.log(item.id, item.label, item.href, item.subitems, item.subitems.length)
-        if(item.subitems.length > 0) {
-
-        }
-        // TODO handle sub items
-        navigation = [...navigation, nav];
-    });
-    //console.log(book.spine)
-    return navigation;*/
-    return handleNavigationItems(book, book.navigation);
-}
-
-function handleNavigationItems(book, items) {
+function generateNavigation(book, items) {
     let navigation = [];
     items.forEach(item => {
         let nav = {};
@@ -276,43 +230,8 @@ function handleNavigationItems(book, items) {
             nav["href"] = book.spine.get("Text/" + item.href.split('/').pop()).href + dash;
             //console.log("Using second method", nav["href"])
         }
-        nav.subitems = handleNavigationItems(book, item.subitems);
+        nav.subitems = generateNavigation(book, item.subitems);
         navigation = [...navigation, nav];
     });
     return navigation;
-}
-
-function generateChapters(book) {
-    let chapters = {};
-    let nav = "";
-    book.spine.items.forEach(spine => {
-        let s = spine.href.split('/').pop();
-        // TODO da rimuovere se funziona il nuovo metodo di subchapters
-        /*let item = null;
-        book.navigation.forEach(nav => {
-            if (nav.href.includes(s)) {
-                item = nav;
-            }
-        });*/
-        let item = findChapter(book.navigation, s);
-        if (item != null) {
-            nav = item.label;
-        }
-        chapters[spine.href] = nav;
-    });
-    return chapters;
-}
-
-function findChapter(items, s) {
-    let item = null;
-    items.forEach(nav => {
-        if (nav.href.includes(s)) {
-            item = nav;
-        }
-        let chap = findChapter(nav.subitems, s);
-        if(chap != null) {
-            item = chap;
-        }
-    });
-    return item;
 }

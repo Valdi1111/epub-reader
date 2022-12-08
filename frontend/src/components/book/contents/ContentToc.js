@@ -1,9 +1,9 @@
 
 function ContentToc(props) {
-    const {chapterName, navigation, navigateTo} = props;
+    const {chapter, navigation, navigateTo} = props;
 
-    function active(label) {
-        if (label === chapterName) {
+    function active(i) {
+        if (chapter !== null && i.id === chapter.id) {
             return "active";
         }
         return "";
@@ -24,7 +24,7 @@ function ContentToc(props) {
         return (
             <>
                 <li className={"cursor-pointer"}>
-                    <span className={`dropdown-item text-truncate ${active(i.label)}`} title={i.label}
+                    <span className={`dropdown-item text-truncate ${active(i)}`} title={i.label}
                           onClick={e => goToItem(i)} style={{padding: `0.25rem ${level}.5rem`}}>
                         {i.label}
                     </span>

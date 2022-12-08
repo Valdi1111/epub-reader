@@ -8,7 +8,7 @@ function BookRenderer(props) {
         setSetting,
         title,
         chapter,
-        chapterName,
+        section,
         location,
         percentage,
         navigation,
@@ -22,10 +22,10 @@ function BookRenderer(props) {
         <>
             <ImageViewModal/>
             <div className={"d-flex flex-column vw-100 vh-100"}>
-                <BookHeader settings={settings} setSetting={setSetting} title={title} chapterName={chapterName}
+                <BookHeader settings={settings} setSetting={setSetting} title={title} chapter={chapter}
                             navigation={navigation} navigateTo={navigateTo} search={search}/>
                 <div id={"view-root"} className={"d-flex flex-grow-1 justify-content-center"}/>
-                <BookFooter chapter={chapter} chapterName={chapterName} location={location} percentage={percentage}
+                <BookFooter chapter={chapter} section={section} location={location} percentage={percentage}
                             left={left} right={right}/>
             </div>
         </>

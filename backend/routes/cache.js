@@ -55,7 +55,6 @@ router.put(
     async (req, res, next) => {
         try {
             const {id} = req.params;
-            console.log(req.body.navigation)
             await cache.navigation(id, JSON.stringify(req.body.navigation));
             res.send();
         } catch (err) {
@@ -66,25 +65,11 @@ router.put(
 );
 
 router.put(
-    "/chapters",
-    async (req, res, next) => {
-        try {
-            const {id} = req.params;
-            await cache.chapters(id, JSON.stringify(req.body.chapters));
-            res.send();
-        } catch (err) {
-            console.error("Error on PUT /books/:id/cache/chapters.");
-            next(err);
-        }
-    }
-);
-
-router.put(
     "/locations",
     async (req, res, next) => {
         try {
             const {id} = req.params;
-            await cache.locations(id, JSON.stringify(req.body.locations), req.body.total);
+            await cache.locations(id, JSON.stringify(req.body.locations));
             await cache.positionNull(id);
             res.send();
         } catch (err) {

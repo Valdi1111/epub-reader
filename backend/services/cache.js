@@ -30,23 +30,12 @@ async function navigation(id, navigation) {
     return results;
 }
 
-async function chapters(id, chapters) {
+async function locations(id, locations) {
     const [results,] = await db.promise().query(
         `UPDATE book_cache c
-         SET c.chapters = ?
+         SET c.locations = ?
          WHERE c.id = ?`,
-        [chapters, id]
-    );
-    return results;
-}
-
-async function locations(id, locations, total) {
-    const [results,] = await db.promise().query(
-        `UPDATE book_cache c
-         SET c.locations = ?,
-             c.total     = ?
-         WHERE c.id = ?`,
-        [locations, total, id]
+        [locations, id]
     );
     return results;
 }
@@ -99,7 +88,6 @@ module.exports = {
     cover,
     coverNull,
     navigation,
-    chapters,
     locations,
     position,
     positionNull,

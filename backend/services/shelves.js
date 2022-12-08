@@ -30,7 +30,7 @@ async function getBooksInShelf(id) {
                 bm.creator,
                 bc.cover,
                 br.page,
-                bc.total
+                JSON_LENGTH(bc.locations) AS total
          FROM book b
                   INNER JOIN book_cache bc on b.id = bc.id
                   INNER JOIN book_metadata bm on b.id = bm.id
