@@ -4,9 +4,8 @@ import {getShelves, getBooksInShelf} from "../../Api";
 import ShelfAddModal from "./modals/ShelfAddModal";
 import ShelfEditModal from "./modals/ShelfEditModal";
 import ShelfDeleteModal from "./modals/ShelfDeleteModal";
-import LibraryItem from "../LibraryItem";
-import ShelfItem from "./ShelfItem";
-import ShelfButtons from "./ShelfButtons";
+import ShelvesList from "./ShelvesList";
+import ShelfContent from "./ShelfContent";
 
 function LibraryShelves(props) {
     const {refresh} = props;
@@ -51,38 +50,14 @@ function LibraryShelves(props) {
         refreshBooks();
     }
 
-    function dMode(shelf) {
-        if ((shelf && id !== undefined) || (!shelf && id === undefined)) {
-            return "d-none";
-        }
-        return "";
-    }
-
     return (
         <>
             <ShelfAddModal refresh={refreshShelves}/>
             <ShelfEditModal refresh={refreshAll}/>
             <ShelfDeleteModal refresh={refreshShelves}/>
             <div className={"flex-grow-1 d-flex flex-row"}>
-                <div className={`d-md-flex flex-column col-12 col-md-4 col-lg-3 ${dMode(true)}`}>
-                    <div className={"flex-grow-1 scroll-pane"}>
-                        <ul className={"scroll-pane-inner list-group list-group-flush"}>
-                            {shelves.map(s => <ShelfItem key={s.id} shelf={s} active={s.id == id}/>)}
-                        </ul>
-                    </div>
-                    <div className={"d-flex flex-row border-top p-2"}>
-                        <ShelfButtons shelf={shelves.filter(s => s.id == id)[0]} active={id !== undefined}/>
-                    </div>
-                </div>
-                <div className={`d-md-block scroll-pane col-12 col-md-8 col-lg-9 ${dMode(false)}`}>
-                    <div className={"scroll-pane-inner row mx-0"}>
-                        {books.map(b =>
-                            <div className={"col-auto p-2"} key={b.id}>
-                                <LibraryItem book={b}/>
-                            </div>
-                        )}
-                    </div>
-                </div>
+                <ShelvesList shelves={shelves} id={id}/>
+                <ShelfContent books={books} id={id}/>
             </div>
         </>
     );

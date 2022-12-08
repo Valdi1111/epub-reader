@@ -4,7 +4,6 @@ const cors = require("cors");
 
 const apiRoute = require("./routes/api");
 const express = require("express");
-const fs = require("fs");
 const app = express();
 
 app.use(cors())
@@ -21,7 +20,7 @@ app.get("/covers/:id", (req, res) => {
     res.sendFile(path.join(__dirname, "covers",req.params.id));
 });
 app.use("/", express.static(path.join(__dirname, "public")));
-app.get((req,res) => {
+app.get("*", (req,res) => {
     res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 

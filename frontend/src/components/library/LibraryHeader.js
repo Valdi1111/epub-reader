@@ -14,7 +14,7 @@ function LibraryHeader(props) {
         <div className={"border-bottom"}>
             <div className={"d-flex align-items-center justify-content-between p-2"} style={{height: "60px"}}>
                 <button type={"button"} className={"btn-icon d-md-none btn btn-outline-secondary"}
-                        data-bs-toggle={"collapse"} data-bs-target={"#top-nav"} aria-controls={"top-nav"}
+                        data-bs-toggle={"collapse"} data-bs-target={"#mobile-nav"} aria-controls={"mobile-nav"}
                         aria-expanded={false} aria-label={"Toggle navigation"}>
                     <FontAwesomeIcon icon={faBars} width={16} height={16}/>
                 </button>
