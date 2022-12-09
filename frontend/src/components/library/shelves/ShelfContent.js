@@ -4,11 +4,16 @@ function ShelfContent(props) {
     const {elems, id} = props;
 
     function Section(props) {
-        const {shelf, books} = props;
+        const {uid, shelf, books} = props;
         return (
             <>
-                <p className={"text-center fw-bold p-2 mb-0 mt-2"}>{shelf}</p>
-                <div className={"row mx-0"}>
+                <div className={"p-2"}>
+                    <button className={"btn btn-outline-secondary w-100"} type={"button"} data-bs-toggle={"collapse"}
+                            data-bs-target={`#${uid}`} aria-expanded={true} aria-controls={uid}>
+                        {shelf}
+                    </button>
+                </div>
+                <div id={uid} className={"collapse row mx-0 show"}>
                     {books.map(b =>
                         <div className={"col-auto p-2"} key={b.id}>
                             <LibraryItem book={b}/>
@@ -21,9 +26,11 @@ function ShelfContent(props) {
 
     function getSections() {
         let e = [];
+        let num = 0;
         for (let key in elems) {
             let val = elems[key];
-            e = [...e, <Section key={key} shelf={key} books={val}/>];
+            e = [...e, <Section key={key} uid={`shelf-section-${num}`} shelf={key} books={val}/>];
+            num++;
         }
         return e;
     }
