@@ -1,7 +1,7 @@
 import {useNavigate, useParams} from "react-router-dom";
-import {cloneElement, useEffect, useRef, useState} from "react"
+import {cloneElement, useEffect, useState} from "react"
 //import "https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.5/jszip.min.js";
-import JSZip from "jszip";
+//import JSZip from "jszip";
 import bootstrap from "bootstrap/dist/js/bootstrap.bundle.min";
 import {Book, EpubCFI} from "epubjs";
 import $ from "jquery";
@@ -27,11 +27,10 @@ function BookElement(props) {
     const [book, setBook] = useState(null);
     // cache
     const [navigation, setNavigation] = useState([]); // navigation map (id, file, chapter)
-    const [chapters, setChapters] = useState({}); // chapters map (file -> chapter)
     const [locations, setLocations] = useState([]); // locations list
     // data
-    const [title, setTitle] = useState("Loading...");
-    const [mark, setMark] = useState(null); // current position and page
+    const [title, setTitle] = useState(null);
+    const [mark, setMark] = useState({position: null, page: 0}); // current position and page
     const [chapter, setChapter] = useState(null); // current chapter
     const [section, setSection] = useState(null); // current section (from spine)
     const [location, setLocation] = useState(null);
@@ -58,12 +57,16 @@ function BookElement(props) {
     }, [id]);
 
     useEffect(() => {
-        if (!mark) {
+        if (!mark.position) {
             return;
         }
-        savePosition(id, mark.position, mark.page).then(res => console.debug("Position updated!"), err => console.error(err));
+        savePosition(id, mark.position, mark.page).then(
+            res => console.debug("Position updated!"),
+                err => console.error(err)
+        );
     }, [mark]);
 
+    // TODO possibile che convenga spostarlo nel response del getBookById
     useEffect(() => {
         if (!book) {
             return;
@@ -72,10 +75,11 @@ function BookElement(props) {
         book.ready.then(() => {
             console.log("Loading locations...");
             book.locations.load(locations);
+            book.locations.load(locations);
             console.log("Locations loaded!");
         });
         $(document).keydown(onKeyDown);
-        updateLayout("auto")
+        updateLayout("auto");
     }, [book]);
 
     function updateLayout() {
@@ -90,7 +94,7 @@ function BookElement(props) {
             height: "100%",
             gap: gap
         });
-        if (!mark) {
+        if (!mark.position) {
             rendition.display();
         } else {
             rendition.display(mark.position);
@@ -155,26 +159,9 @@ function BookElement(props) {
                 }, 3000);
             }
         });
-        // Update navigation with cfi based on current section
-        rendition.hooks.content.register(contents => {
-            updateChapters(contents.documentElement, navigation);
-        });
         updateDefaultTheme();
         themes.forEach(t => rendition.themes.register(t.theme, THEMES_URL + t.css));
         updateTheme();
-    }
-
-    function updateChapters(doc, chaps) {
-        chaps.forEach(c => {
-            const section = book.spine.get(c.href);
-            let itemCfi = `epubcfi(${section.cfiBase}!/4/1:0)`;
-            if (c.href.includes("#")) {
-                const dash = c.href.split('#').pop();
-                itemCfi = section.cfiFromElement(doc.querySelector("#" + dash));
-            }
-            c.cfi = itemCfi;
-            updateChapters(doc, c.subitems);
-        })
     }
 
     // Possibili funzioni per trovare il chapter tramite la href della current location
@@ -201,12 +188,18 @@ function BookElement(props) {
     }
 
     function getChapFromCfi(pos) {
+        //const spineItem = book.spine.get(pos);
+        //console.log("spine", spineItem);
+        //const section = book.section(spineItem);
+        //console.log("section", section);
         let prev = null;
         flattenNav(navigation).forEach(s => {
-            if (new EpubCFI().compare(pos, s.cfi) === -1) {
-                return;
+            if(s.cfi !== null) {
+                if (new EpubCFI().compare(pos, s.cfi) === -1) {
+                    return;
+                }
+                prev = s;
             }
-            prev = s;
         })
         return prev;
     }
@@ -267,7 +260,7 @@ function BookElement(props) {
             .then(item.find.bind(item, value))
             .finally(item.unload.bind(item))
             .then(elems => elems.map(e => {
-                    e.chapter = chapters[item.href];
+                    e.chapter = getChapFromCfi(e.cfi);
                     return e;
                 })
             );

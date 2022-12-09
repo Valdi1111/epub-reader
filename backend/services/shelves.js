@@ -29,12 +29,12 @@ async function getBooksInShelf(id) {
                 bm.title,
                 bm.creator,
                 bc.cover,
-                br.page,
+                bp.page,
                 JSON_LENGTH(bc.locations) AS total
          FROM book b
                   INNER JOIN book_cache bc on b.id = bc.id
                   INNER JOIN book_metadata bm on b.id = bm.id
-                  INNER JOIN book_current br ON b.id = br.id
+                  INNER JOIN book_progress bp ON b.id = bp.id
          WHERE b.url LIKE ?
          ORDER BY b.url`,
         [`${results1[0].path}/%`]

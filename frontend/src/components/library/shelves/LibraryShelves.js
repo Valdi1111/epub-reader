@@ -1,6 +1,6 @@
 import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {getShelves, getBooksInShelf} from "../../Api";
+import {getShelves, getBooksInShelf, invalidateCache} from "../../Api";
 import ShelfAddModal from "./modals/ShelfAddModal";
 import ShelfEditModal from "./modals/ShelfEditModal";
 import ShelfDeleteModal from "./modals/ShelfDeleteModal";
@@ -49,6 +49,18 @@ function LibraryShelves(props) {
         refreshShelves();
         refreshBooks();
     }
+
+    /*
+    function invalidateAll() {
+        books.forEach(b => {
+            const {url, id} = b;
+            invalidateCache(url, id).then(
+                res => console.log("Book", res, "Cache recreated successfully!"),
+                err => console.error(err)
+            );
+        });
+    }
+     */
 
     return (
         <>

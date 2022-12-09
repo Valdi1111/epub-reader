@@ -25,14 +25,16 @@ function ContentSearch(props) {
         }
         const searchType = $("input[name='search-type']:checked");
         const promise = search(s.val(), searchType.val() === "all");
-        promise.then(result => setSearchResults(result));
+        promise.then(result => {
+            setSearchResults(result)
+        });
     }
 
     function SearchItem(props) {
         const {i} = props
         return (
             <li className={"dropdown-item px-2"} onClick={e => navigateTo(i.cfi)}>
-                <p className={"text-wrap text-muted mb-0"} style={{fontSize: "85%"}}>{i.chapter}</p>
+                {!i.chapter ? <></> : <p className={"text-wrap text-muted mb-0"} style={{fontSize: "85%"}}>{i.chapter.label}</p>}
                 <span className={"text-wrap"}>{i.excerpt}</span>
             </li>
         );

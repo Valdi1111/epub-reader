@@ -1,7 +1,9 @@
 const response = require("../methods/response");
 const router = require("express").Router();
+const progress = require("../services/progress");
 const books = require("../services/books");
-const cache = require("./cache");
+const progressRoute = require("./progress");
+const cacheRoute = require("./cache");
 const path = require("path");
 const fs = require("fs");
 
@@ -52,7 +54,7 @@ router.get(
                 response.notFound(res, "book_not_found", "Book not found with id " + id);
                 return;
             }
-            await books.updateLastRead(id);
+            await progress.updateLastRead(id);
             res.json(results[0]);
         } catch (err) {
             console.error("Error on GET /books/:id.");
@@ -96,6 +98,7 @@ router.delete(
     }
 );
 
-router.use("/:id/cache", cache);
+router.use("/:id/progress", progressRoute);
+router.use("/:id/cache", cacheRoute);
 
 module.exports = router;

@@ -7,15 +7,15 @@ async function getAll() {
                 bm.title,
                 bm.creator,
                 bc.cover,
-                br.page,
+                bp.page,
                 JSON_LENGTH(bc.locations) AS total,
                 (SELECT s.id FROM shelf s WHERE b.url LIKE CONCAT(s.path, ?)) AS shelf
          FROM book b
                   INNER JOIN book_cache bc
                              ON b.id = bc.id
                   INNER JOIN book_metadata bm ON b.id = bm.id
-                  INNER JOIN book_current br ON b.id = br.id
-         ORDER BY b.last_read DESC`,
+                  INNER JOIN book_progress bp ON b.id = bp.id
+         ORDER BY bp.last_read DESC`,
         [`/%`]
     );
     return results;
@@ -36,12 +36,12 @@ async function getNotInShelf() {
                     bm.title,
                     bm.creator,
                     bc.cover,
-                    br.page,
+                    bp.page,
                     JSON_LENGTH(bc.locations) AS total
              FROM book b
                       INNER JOIN book_cache bc ON b.id = bc.id
                       INNER JOIN book_metadata bm ON b.id = bm.id
-                      INNER JOIN book_current br ON b.id = br.id
+                      INNER JOIN book_progress bp ON b.id = bp.id
              ORDER BY bm.title`,
             []
         );
@@ -53,12 +53,12 @@ async function getNotInShelf() {
                 bm.title,
                 bm.creator,
                 bc.cover,
-                br.page,
+                bp.page,
                 JSON_LENGTH(bc.locations) AS total
          FROM book b
                   INNER JOIN book_cache bc ON b.id = bc.id
                   INNER JOIN book_metadata bm ON b.id = bm.id
-                  INNER JOIN book_current br ON b.id = br.id
+                  INNER JOIN book_progress bp ON b.id = bp.id
          WHERE b.url NOT REGEXP ?
          ORDER BY bm.title`,
         [exp]
@@ -74,12 +74,12 @@ async function getById(id) {
                 bc.cover,
                 bc.navigation,
                 bc.locations,
-                br.position,
-                br.page
+                bp.position,
+                bp.page
          FROM book b
                   INNER JOIN book_cache bc ON b.id = bc.id
                   INNER JOIN book_metadata bm on b.id = bm.id
-                  INNER JOIN book_current br on b.id = br.id
+                  INNER JOIN book_progress bp on b.id = bp.id
          WHERE b.id = ?`,
         [id]
     );
@@ -119,23 +119,13 @@ async function add(url, m) {
         [id, m.identifier, m.title, m.creator, m.pubdate, m.publisher, m.language, m.rights, m.modified_date]
     );
     await db.promise().query(
-        `INSERT INTO book_current (id)
+        `INSERT INTO book_progress (id)
          VALUES (?)`,
         [id]
     );
     await db.promise().query(
         `INSERT INTO book_cache (id)
          VALUES (?)`,
-        [id]
-    );
-    return results;
-}
-
-async function updateLastRead(id) {
-    const [results,] = await db.promise().query(
-        `UPDATE book b
-         SET b.last_read = NOW()
-         WHERE b.id = ?`,
         [id]
     );
     return results;
@@ -148,10 +138,10 @@ async function remove(id) {
          WHERE bc.id = ?`,
         [id]
     );
-    const [results_br,] = await db.promise().query(
+    const [results_bp,] = await db.promise().query(
         `DELETE
-         FROM book_current br
-         WHERE br.id = ?`,
+         FROM book_progress bp
+         WHERE bp.id = ?`,
         [id]
     );
     const [results_bm,] = await db.promise().query(
@@ -176,6 +166,5 @@ module.exports = {
     getMetadataById,
     getCoverById,
     add,
-    updateLastRead,
     remove
 }

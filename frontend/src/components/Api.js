@@ -117,14 +117,14 @@ export async function deleteBook(id) {
 
 export async function markRead(id) {
     return await axios.put(
-        `${API_URL}books/${id}/cache/mark-read`, {},
+        `${API_URL}books/${id}/progress/mark-read`, {},
         {headers: {"x-access-token": getToken()}}
     );
 }
 
 export async function markUnread(id) {
     return await axios.put(
-        `${API_URL}books/${id}/cache/mark-unread`, {},
+        `${API_URL}books/${id}/progress/mark-unread`, {},
         {headers: {"x-access-token": getToken()}}
     );
 }
@@ -193,6 +193,7 @@ async function saveLocations(id, book) {
 
 async function saveNavigation(id, book) {
     console.debug("Book", id, "Generating navigation...");
+    await loadAllSpines(book);
     const navigation = generateNavigation(book, book.navigation);
     console.debug("Book", id, "Saving navigation...");
     await axios.put(
@@ -205,31 +206,61 @@ async function saveNavigation(id, book) {
 
 export function savePosition(id, position, page) {
     return axios.put(
-        `${API_URL}books/${id}/cache/position`,
+        `${API_URL}books/${id}/progress/position`,
         {position, page},
         {headers: {"x-access-token": getToken()}}
     );
+}
+
+async function loadAllSpines(book) {
+    let spines = [];
+    book.spine.each(s => {
+        spines = [...spines, s];
+    });
+    await Promise.all(spines.map(async section => {
+        await section.load(book.load.bind(book));
+    }))
 }
 
 function generateNavigation(book, items) {
     let navigation = [];
     items.forEach(item => {
         let nav = {};
-        nav["id"] = item.id;
-        nav["label"] = item.label;
+        nav.id = item.id;
+        nav.label = item.label.replace("\n", "").trim();
+        // check for ids in href
         let dash = "";
         if(item.href.includes("#")) {
             dash = "#" + item.href.split('#').pop();
         }
-        if(item.href === null || item.href === "") {
-            nav["href"] = null;
-        } else if(book.spine.get(item.href) !== null) {
-            nav["href"] = book.spine.get(item.href).href + dash;
+        // handle items with null href (section for chapters)
+        if(!item.href) {
+            nav.href = null;
+        }
+        // get href from spine
+        else if(book.spine.get(item.href) !== null) {
+            nav.href = book.spine.get(item.href).href + dash;
             //console.log("Using first method", nav["href"])
-        } else {
-            nav["href"] = book.spine.get("Text/" + item.href.split('/').pop()).href + dash;
+        }
+        // try rebuilding the href and get from spine
+        else {
+            nav.href = book.spine.get("Text/" + item.href.split('/').pop()).href + dash;
             //console.log("Using second method", nav["href"])
         }
+        // ignoring cfi for section
+        if(!nav.href) {
+            nav.cfi = null;
+        }
+        // get chapter cfi from spine
+        else {
+            const section = book.spine.get(nav.href);
+            if (!dash) {
+                nav.cfi = `epubcfi(${section.cfiBase}!/4/1:0)`;
+            } else {
+                nav.cfi = section.cfiFromElement(section.document.documentElement.querySelector(`[id='${dash}']`));
+            }
+        }
+        // handle sub items
         nav.subitems = generateNavigation(book, item.subitems);
         navigation = [...navigation, nav];
     });
