@@ -69,7 +69,7 @@ function LibraryShelves(props) {
             <ShelfDeleteModal refresh={refreshShelves}/>
             <div className={"flex-grow-1 d-flex flex-row"}>
                 <ShelvesList shelves={shelves} id={id}/>
-                <ShelfContent books={books} id={id}/>
+                <ShelfContent id={id} elems={books}/>
             </div>
         </>
     );

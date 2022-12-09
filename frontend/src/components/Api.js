@@ -227,7 +227,7 @@ function generateNavigation(book, items) {
     items.forEach(item => {
         let nav = {};
         nav.id = item.id;
-        nav.label = item.label.replace("\n", "").trim();
+        nav.label = item.label.trim();
         // check for ids in href
         let dash = "";
         if(item.href.includes("#")) {

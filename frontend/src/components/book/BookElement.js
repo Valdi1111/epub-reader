@@ -57,17 +57,6 @@ function BookElement(props) {
     }, [id]);
 
     useEffect(() => {
-        if (!mark.position) {
-            return;
-        }
-        savePosition(id, mark.position, mark.page).then(
-            res => console.debug("Position updated!"),
-                err => console.error(err)
-        );
-    }, [mark]);
-
-    // TODO possibile che convenga spostarlo nel response del getBookById
-    useEffect(() => {
         if (!book) {
             return;
         }
@@ -75,12 +64,21 @@ function BookElement(props) {
         book.ready.then(() => {
             console.log("Loading locations...");
             book.locations.load(locations);
-            book.locations.load(locations);
             console.log("Locations loaded!");
         });
         $(document).keydown(onKeyDown);
         updateLayout("auto");
     }, [book]);
+
+    useEffect(() => {
+        if (!mark.position) {
+            return;
+        }
+        savePosition(id, mark.position, mark.page).then(
+            res => console.debug("Position updated!"),
+            err => console.error(err)
+        );
+    }, [mark]);
 
     function updateLayout() {
         let area = $("#view-root");
@@ -188,13 +186,9 @@ function BookElement(props) {
     }
 
     function getChapFromCfi(pos) {
-        //const spineItem = book.spine.get(pos);
-        //console.log("spine", spineItem);
-        //const section = book.section(spineItem);
-        //console.log("section", section);
         let prev = null;
         flattenNav(navigation).forEach(s => {
-            if(s.cfi !== null) {
+            if (s.cfi !== null) {
                 if (new EpubCFI().compare(pos, s.cfi) === -1) {
                     return;
                 }
@@ -286,12 +280,10 @@ function BookElement(props) {
     }
 
     function onLeft() {
-        //book.package.metadata.direction === "rtl" ? book.rendition.next() : book.rendition.prev();
         book.rendition.prev();
     }
 
     function onRight() {
-        //book.package.metadata.direction === "rtl" ? book.rendition.prev() : book.rendition.next();
         book.rendition.next();
     }
 

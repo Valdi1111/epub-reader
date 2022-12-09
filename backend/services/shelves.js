@@ -39,7 +39,17 @@ async function getBooksInShelf(id) {
          ORDER BY b.url`,
         [`${results1[0].path}/%`]
     );
-    return [false, results2];
+    let res = {};
+    results2.forEach(b => {
+        const url = b.url.replace(`${results1[0].path}/`, "").split("/", 2);
+        const path = url.length === 1 ? results1[0].path : url[0];
+        if(!res[path]) {
+            res[path] = [b];
+        } else {
+            res[path] = [...res[path], b];
+        }
+    })
+    return [false, res];
 }
 
 async function addShelf(path, name) {
