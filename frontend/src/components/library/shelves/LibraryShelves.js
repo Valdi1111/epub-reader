@@ -11,7 +11,7 @@ function LibraryShelves(props) {
     const {refresh} = props;
     const {id} = useParams();
     const [shelves, setShelves] = useState([]);
-    const [books, setBooks] = useState([]);
+    const [elements, setElements] = useState([]);
     const navigate = useNavigate();
 
     // refresh shelves on parent delete (for badge number)
@@ -22,10 +22,10 @@ function LibraryShelves(props) {
     // refresh books on parent delete and on shelf id change
     useEffect(() => {
         if (id === undefined) {
-            setBooks([]);
+            setElements([]);
             return;
         }
-        refreshBooks();
+        refreshElements();
     }, [id, refresh]);
 
     function refreshShelves() {
@@ -35,9 +35,9 @@ function LibraryShelves(props) {
         );
     }
 
-    function refreshBooks() {
+    function refreshElements() {
         getBooksInShelf(id).then(
-            res => setBooks(res.data),
+            res => setElements(res.data),
             err => {
                 navigate(`/library/shelves`);
                 console.error(err);
@@ -47,7 +47,7 @@ function LibraryShelves(props) {
 
     function refreshAll() {
         refreshShelves();
-        refreshBooks();
+        refreshElements();
     }
 
     /*
@@ -69,7 +69,7 @@ function LibraryShelves(props) {
             <ShelfDeleteModal refresh={refreshShelves}/>
             <div className={"flex-grow-1 d-flex flex-row"}>
                 <ShelvesList shelves={shelves} id={id}/>
-                <ShelfContent id={id} elems={books}/>
+                <ShelfContent id={id} elements={elements}/>
             </div>
         </>
     );

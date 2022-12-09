@@ -1,7 +1,7 @@
 import LibraryItem from "../LibraryItem";
 
 function ShelfContent(props) {
-    const {elems, id} = props;
+    const {elements, id} = props;
 
     function Section(props) {
         const {uid, shelf, books} = props;
@@ -27,8 +27,8 @@ function ShelfContent(props) {
     function getSections() {
         let e = [];
         let num = 0;
-        for (let key in elems) {
-            let val = elems[key];
+        for (let key in elements) {
+            let val = elements[key];
             e = [...e, <Section key={key} uid={`shelf-section-${num}`} shelf={key} books={val}/>];
             num++;
         }
