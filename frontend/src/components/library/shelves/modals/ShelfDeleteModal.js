@@ -33,12 +33,12 @@ function ShelfDeleteModal(props) {
     }
 
     return (
-        <div className={"modal fade"} id={"delete-shelf-modal"} tabIndex={-1}
-             aria-labelledby={"delete-shelf-modal-label"} aria-hidden={true} ref={modal}>
+        <div className={"modal fade"} id={"shelf-delete-modal"} tabIndex={-1} aria-hidden={true}
+             aria-labelledby={"shelf-delete-modal-label"} ref={modal}>
             <div className={"modal-dialog"}>
                 <div className={"modal-content"}>
                     <div className={"modal-header"}>
-                        <h5 className={"modal-title"} id={"delete-shelf-modal-label"}>Confirm shelf deletion</h5>
+                        <h5 className={"modal-title"} id={"shelf-delete-modal-label"}>Confirm shelf deletion</h5>
                         <button type={"button"} className={"btn-close"} data-bs-dismiss={"modal"} aria-label={"Close"}/>
                     </div>
                     <div className={"modal-body"}>
@@ -47,10 +47,11 @@ function ShelfDeleteModal(props) {
                         <p>This process cannot be undone.</p>
                     </div>
                     <div className={"modal-footer"}>
-                        <button type={"button"} className={"btn btn-danger"} data-bs-dismiss="modal">
+                        <button type={"button"} className={"btn btn-danger"} data-bs-dismiss={"modal"}>
                             Close
                         </button>
-                        <button type={"button"} className={"btn btn-primary"} data-bs-dismiss="modal" onClick={confirm}>
+                        <button type={"button"} className={"btn btn-primary"} data-bs-dismiss={"modal"}
+                                onClick={confirm}>
                             Confirm
                         </button>
                     </div>

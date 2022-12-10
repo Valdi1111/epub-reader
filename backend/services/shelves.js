@@ -41,14 +41,14 @@ async function getBooksInShelf(id) {
     );
     let res = {};
     results2.forEach(b => {
-        const url = b.url.replace(`${results1[0].path}/`, "").split("/", 2);
-        const path = url.length === 1 ? results1[0].path : url[0];
-        if(!res[path]) {
-            res[path] = [b];
+        const path = b.url.replace(`${results1[0].path}/`, "").split("/", 2);
+        const folder = path.length === 1 ? results1[0].path : path[0];
+        if(!res[folder]) {
+            res[folder] = [b];
         } else {
-            res[path] = [...res[path], b];
+            res[folder] = [...res[folder], b];
         }
-    })
+    });
     return [false, res];
 }
 

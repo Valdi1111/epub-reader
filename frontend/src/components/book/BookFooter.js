@@ -21,8 +21,8 @@ function BookFooter(props) {
     }
 
     return (
-        <footer id={"bottom_bar"} className={"p-2 border-top d-flex flex-row align-items-center"}>
-            <button className={"bottom_bar_hover btn-icon btn btn-outline-secondary"} onClick={left} title={"Prev"}>
+        <footer className={"p-2 border-top d-flex flex-row align-items-center"}>
+            <button className={"bottom_bar_hover btn-icon btn btn-outline-secondary"} onClick={left}>
                 <FontAwesomeIcon icon={faAngleLeft} width={16} height={16}/>
             </button>
             <p id={"book-location"} className={"col mb-0 text-center text-truncate px-2"}>
@@ -32,7 +32,7 @@ function BookFooter(props) {
                title={chapterLabel()}>
                 {chapterLabel()}
             </p>
-            <button className={"bottom_bar_hover btn-icon btn btn-outline-secondary"} onClick={right} title={"Next"}>
+            <button className={"bottom_bar_hover btn-icon btn btn-outline-secondary"} onClick={right}>
                 <FontAwesomeIcon icon={faAngleRight} width={16} height={16}/>
             </button>
         </footer>

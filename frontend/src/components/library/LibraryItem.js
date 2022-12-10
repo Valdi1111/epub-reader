@@ -36,7 +36,7 @@ function LibraryItem(props) {
     function ItemAbout() {
         return (
             <li className={"cursor-pointer"}>
-                <span className={"dropdown-item"} data-bs-toggle={"modal"} data-bs-target={"#info-modal"}
+                <span className={"dropdown-item"} data-bs-toggle={"modal"} data-bs-target={"#book-info-modal"}
                       data-bs-id={id} data-bs-cover={cover} data-bs-url={url}>
                     About this book
                 </span>
@@ -73,10 +73,10 @@ function LibraryItem(props) {
      * @returns {JSX.Element}
      * @constructor
      */
-    function ItemRecreate() {
+    function ItemInvalidate() {
         return (
             <li className={"cursor-pointer"}>
-                <span className={"dropdown-item"} data-bs-toggle={"modal"} data-bs-target={"#invalid-modal"}
+                <span className={"dropdown-item"} data-bs-toggle={"modal"} data-bs-target={"#book-invalidate-modal"}
                       data-bs-id={id} data-bs-title={title} data-bs-url={url}>
                     Recreate cache
                 </span>
@@ -92,7 +92,7 @@ function LibraryItem(props) {
     function ItemRemove() {
         return (
             <li className={"cursor-pointer"}>
-                <span className={"dropdown-item"} data-bs-toggle={"modal"} data-bs-target={"#delete-modal"}
+                <span className={"dropdown-item"} data-bs-toggle={"modal"} data-bs-target={"#book-delete-modal"}
                       data-bs-id={id} data-bs-title={title}>
                     Remove
                 </span>
@@ -115,7 +115,7 @@ function LibraryItem(props) {
                         <ItemGoToShelf/>
                         <ItemAbout/>
                         <ItemMarkRead/>
-                        <ItemRecreate/>
+                        <ItemInvalidate/>
                         <ItemRemove/>
                     </ul>
                 </div>

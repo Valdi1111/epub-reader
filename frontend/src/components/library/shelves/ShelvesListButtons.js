@@ -7,7 +7,7 @@ function ShelvesListButtons(props) {
     function AddButton() {
         return (
             <button className={"btn btn-success btn-icon"}
-                    type={"button"} data-bs-toggle={"modal"} data-bs-target={"#add-shelf-modal"}>
+                    type={"button"} data-bs-toggle={"modal"} data-bs-target={"#shelf-add-modal"}>
                 <FontAwesomeIcon icon={faPlus} width={16} height={16}/>
             </button>
         );
@@ -19,7 +19,7 @@ function ShelvesListButtons(props) {
         }
         return (
             <button className={"btn btn-primary btn-icon ms-auto"} type={"button"} data-bs-toggle={"modal"}
-                    data-bs-target={"#edit-shelf-modal"} data-bs-path={shelf.path} data-bs-name={shelf.name}
+                    data-bs-target={"#shelf-edit-modal"} data-bs-path={shelf.path} data-bs-name={shelf.name}
                     data-bs-id={shelf.id}>
                 <FontAwesomeIcon icon={faPencil} width={16} height={16}/>
             </button>
@@ -32,7 +32,7 @@ function ShelvesListButtons(props) {
         }
         return (
             <button className={"btn btn-danger btn-icon ms-2"} type={"button"} data-bs-toggle={"modal"}
-                    data-bs-target={"#delete-shelf-modal"} data-bs-name={shelf.name} data-bs-id={shelf.id}>
+                    data-bs-target={"#shelf-delete-modal"} data-bs-name={shelf.name} data-bs-id={shelf.id}>
                 <FontAwesomeIcon icon={faTrash} width={16} height={16}/>
             </button>
         );

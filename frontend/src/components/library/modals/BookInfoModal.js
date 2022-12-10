@@ -19,7 +19,7 @@ function BookInfoModal() {
         modal.current.addEventListener("show.bs.modal", (e) => {
             const id = e.relatedTarget.getAttribute("data-bs-id");
             setPath(e.relatedTarget.getAttribute("data-bs-url"));
-            if(e.relatedTarget.getAttribute("data-bs-cover") !== null) {
+            if (e.relatedTarget.getAttribute("data-bs-cover") !== null) {
                 setCover(COVERS_URL + e.relatedTarget.getAttribute("data-bs-cover"));
             } else {
                 setCover(no_cover);
@@ -53,12 +53,12 @@ function BookInfoModal() {
     }, []);
 
     return (
-        <div className={"modal fade"} id={"info-modal"} tabIndex={-1} aria-labelledby={"info-modal-label"}
-             aria-hidden={true} ref={modal}>
+        <div className={"modal fade"} id={"book-info-modal"} tabIndex={-1} aria-hidden={true}
+             aria-labelledby={"book-info-modal-label"} ref={modal}>
             <div className={"modal-dialog modal-dialog-centered"}>
                 <div className={"modal-content"}>
                     <div className={"modal-header"}>
-                        <h5 className={"modal-title"} id={"info-modal-label"}>About this book</h5>
+                        <h5 className={"modal-title"} id={"book-info-modal-label"}>About this book</h5>
                         <button type={"button"} className={"btn-close"} data-bs-dismiss={"modal"} aria-label={"Close"}/>
                     </div>
                     <div className={"modal-body"}>

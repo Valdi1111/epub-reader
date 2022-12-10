@@ -31,11 +31,11 @@ function LibraryHeader(props) {
                     <ul className={"dropdown-menu text-small"} aria-labelledby={"dropdown-user"}>
                         <li>
                             <span className={"dropdown-item cursor-pointer"} data-bs-toggle={"modal"}
-                                  data-bs-target={"#add-modal"}>Add</span>
+                                  data-bs-target={"#book-add-modal"}>Add</span>
                         </li>
                         <li>
                             <span className={"dropdown-item cursor-pointer"} data-bs-toggle={"modal"}
-                                  data-bs-target={"#theme-modal"}>Theme</span>
+                                  data-bs-target={"#theme-change-modal"}>Theme</span>
                         </li>
                         <li>
                             <hr className={"dropdown-divider"}/>
