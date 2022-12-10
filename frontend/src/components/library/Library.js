@@ -42,7 +42,7 @@ function Library(props) {
         <>
             <BookAddModal refresh={refreshBooks}/>
             <BookInfoModal/>
-            <BookInvalidateModal/>
+            <BookInvalidateModal refresh={refreshBooks}/>
             <BookDeleteModal refresh={refreshBooks}/>
             <ThemeChangeModal settings={props.settings} setSetting={props.setSetting} themes={props.themes}/>
             <div className={"d-flex flex-column min-vh-100"}>

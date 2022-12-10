@@ -1,7 +1,7 @@
 import {useEffect, useRef, useState} from "react";
 import {invalidateCache} from "../../Api";
 
-function BookInvalidateModal() {
+function BookInvalidateModal(props) {
     const [id, setId] = useState(null);
     const [title, setTitle] = useState("");
     const [url, setUrl] = useState("");
@@ -25,7 +25,10 @@ function BookInvalidateModal() {
             return;
         }
         invalidateCache(url, id).then(
-            res => console.log("Book", res, "Cache recreated successfully!"),
+            res => {
+                console.log("Book", res, "Cache recreated successfully!");
+                props.refresh();
+            },
             err => console.error(err)
         );
     }
