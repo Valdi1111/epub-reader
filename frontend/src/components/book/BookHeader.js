@@ -5,7 +5,7 @@ function BookHeader(props) {
     const {settings, setSetting, title, chapter, navigation, navigateTo, search} = props;
 
     function titleLabel() {
-        return title === null ? "" : title.label;
+        return title === null ? "" : title;
     }
 
     return (
