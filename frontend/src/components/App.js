@@ -117,7 +117,7 @@ function App() {
         return (
             <div className={"vh-100 vw-100 d-flex justify-content-center align-items-center"}>
                 <div className={"spinner-border"} role={"status"}>
-                    <span className={"sr-only"}>Loading...</span>
+                    <span className={"visually-hidden"}>Loading...</span>
                 </div>
             </div>
         );

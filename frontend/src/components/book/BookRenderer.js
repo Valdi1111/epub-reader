@@ -1,11 +1,13 @@
 import ImageViewModal from "./ImageViewModal";
 import BookFooter from "./BookFooter";
 import BookHeader from "./BookHeader";
+import BookBody from "./BookBody";
 
 function BookRenderer(props) {
     const {
         settings,
         setSetting,
+        ready,
         title,
         chapter,
         section,
@@ -24,7 +26,7 @@ function BookRenderer(props) {
             <div className={"d-flex flex-column vw-100 vh-100"}>
                 <BookHeader settings={settings} setSetting={setSetting} title={title} chapter={chapter}
                             navigation={navigation} navigateTo={navigateTo} search={search}/>
-                <div id={"view-root"} className={"d-flex flex-grow-1 justify-content-center"}/>
+                <BookBody ready={ready}/>
                 <BookFooter chapter={chapter} section={section} location={location} percentage={percentage}
                             left={left} right={right}/>
             </div>

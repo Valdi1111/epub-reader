@@ -4,7 +4,6 @@ import {cloneElement, useEffect, useState} from "react"
 //import JSZip from "jszip";
 import bootstrap from "bootstrap/dist/js/bootstrap.bundle.min";
 import {Book, EpubCFI} from "epubjs";
-import $ from "jquery";
 import {
     FONT,
     FONT_SIZE,
@@ -25,6 +24,7 @@ function BookElement(props) {
     const {id} = useParams();
     // book
     const [book, setBook] = useState(null);
+    const [ready, setReady] = useState(false);
     // cache
     const [navigation, setNavigation] = useState([]); // navigation map (id, file, chapter)
     const [locations, setLocations] = useState([]); // locations list
@@ -39,6 +39,7 @@ function BookElement(props) {
     const navigate = useNavigate();
 
     useEffect(() => {
+        setReady(false);
         getBookById(id).then(
             res => {
                 console.log("Loading book with id " + res.data.id);
@@ -65,8 +66,9 @@ function BookElement(props) {
             console.log("Loading locations...");
             book.locations.load(locations);
             console.log("Locations loaded!");
+            setReady(true);
         });
-        $(document).keydown(onKeyDown);
+        document.onkeydown = onKeyDown;
         updateLayout();
     }, [book]);
 
@@ -81,12 +83,11 @@ function BookElement(props) {
     }, [mark]);
 
     function updateLayout() {
-        let area = $("#view-root");
-        area.empty();
+        let area = document.getElementById("view-root");
         const layout = settings[LAYOUT];
         const gap = parseFloat(settings[MARGINS]);
         const width = parseFloat(settings[WIDTH]) + gap;
-        let rendition = book.renderTo(area[0], {
+        let rendition = book.renderTo(area, {
             ...LAYOUTS[layout],
             width: width + "px",
             height: "100%",
@@ -273,16 +274,17 @@ function BookElement(props) {
     }
 
     return cloneElement(props.children, {
-        title: title,
-        navigation: navigation,
-        navigateTo: navigateTo,
-        search: search,
         settings: settings,
         setSetting: changeSetting,
+        ready: ready,
+        title: title,
         chapter: chapter,
         section: section,
         location: location,
         percentage: percentage,
+        navigation: navigation,
+        navigateTo: navigateTo,
+        search: search,
         left: onLeft,
         right: onRight
     });
