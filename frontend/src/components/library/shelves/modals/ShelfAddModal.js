@@ -1,11 +1,25 @@
-import {useRef} from "react";
+import {useEffect, useRef} from "react";
 import {addShelf} from "../../../Api";
 
 function ShelfAddModal(props) {
     const path = useRef();
     const name = useRef();
+    const modal = useRef();
+
+    useEffect(() => {
+        modal.current.addEventListener("shown.bs.modal", (e) => {
+            path.current.focus();
+        });
+        modal.current.addEventListener("hidden.bs.modal", (e) => {
+            path.current.value = "";
+            name.current.value = "";
+        });
+    }, []);
 
     function confirm() {
+        if (!path.current.value || !name.current.value) {
+            return;
+        }
         addShelf(path.current.value, name.current.value).then(
             res => props.refresh(),
             err => console.error(err)
@@ -14,7 +28,7 @@ function ShelfAddModal(props) {
 
     return (
         <div className={"modal fade"} id={"add-shelf-modal"} tabIndex={-1} aria-labelledby={"add-shelf-modal-label"}
-             aria-hidden={true}>
+             aria-hidden={true} ref={modal}>
             <div className={"modal-dialog"}>
                 <div className={"modal-content"}>
                     <div className={"modal-header"}>

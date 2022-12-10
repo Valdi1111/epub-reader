@@ -3,15 +3,20 @@ import {invalidateCache} from "../../Api";
 
 function BookInvalidateModal() {
     const [id, setId] = useState(null);
-    const [title, setTitle] = useState("...");
-    const [url, setUrl] = useState("...");
+    const [title, setTitle] = useState("");
+    const [url, setUrl] = useState("");
     const modal = useRef();
 
     useEffect(() => {
         modal.current.addEventListener("show.bs.modal", (e) => {
-            setUrl(e.relatedTarget.getAttribute("data-bs-url"));
             setId(e.relatedTarget.getAttribute("data-bs-id"));
             setTitle(e.relatedTarget.getAttribute("data-bs-title"));
+            setUrl(e.relatedTarget.getAttribute("data-bs-url"));
+        });
+        modal.current.addEventListener("hidden.bs.modal", (e) => {
+            setId(null);
+            setTitle("");
+            setUrl("");
         });
     }, []);
 

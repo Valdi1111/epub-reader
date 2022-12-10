@@ -4,7 +4,7 @@ import BookAddModal from "./modals/BookAddModal";
 import BookDeleteModal from "./modals/BookDeleteModal";
 import BookInfoModal from "./modals/BookInfoModal";
 import BookInvalidateModal from "./modals/BookInvalidateModal";
-import ThemeChangeModal from "./ThemeChangeModal";
+import ThemeChangeModal from "./modals/ThemeChangeModal";
 import LibraryHeader from "./LibraryHeader";
 import LibraryBase from "./LibraryBase";
 import LibraryShelves from "./shelves/LibraryShelves";

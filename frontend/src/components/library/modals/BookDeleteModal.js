@@ -3,13 +3,17 @@ import {deleteBook} from "../../Api";
 
 function BookDeleteModal(props) {
     const [id, setId] = useState(null);
-    const [title, setTitle] = useState("...");
+    const [title, setTitle] = useState("");
     const modal = useRef();
 
     useEffect(() => {
         modal.current.addEventListener("show.bs.modal", (e) => {
             setId(e.relatedTarget.getAttribute("data-bs-id"));
             setTitle(e.relatedTarget.getAttribute("data-bs-title"));
+        });
+        modal.current.addEventListener("hidden.bs.modal", (e) => {
+            setId(null);
+            setTitle("");
         });
     }, []);
 

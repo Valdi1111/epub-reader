@@ -13,6 +13,14 @@ function ShelfEditModal(props) {
             path.current.value = e.relatedTarget.getAttribute("data-bs-path");
             name.current.value = e.relatedTarget.getAttribute("data-bs-name");
         });
+        modal.current.addEventListener("shown.bs.modal", (e) => {
+            path.current.focus();
+        });
+        modal.current.addEventListener("hidden.bs.modal", (e) => {
+            setId(null);
+            path.current.value = "";
+            name.current.value = "";
+        });
     }, []);
 
     function confirm() {

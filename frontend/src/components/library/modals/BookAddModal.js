@@ -13,6 +13,9 @@ function BookAddModal(props) {
                 err => console.error(err)
             );
         });
+        modal.current.addEventListener("hidden.bs.modal", (e) => {
+            setBooks([]);
+        });
     }, []);
 
     function confirm() {

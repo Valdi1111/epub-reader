@@ -4,7 +4,7 @@ import {deleteShelf} from "../../../Api";
 
 function ShelfDeleteModal(props) {
     const [id, setId] = useState(null);
-    const [name, setName] = useState("...");
+    const [name, setName] = useState("");
     const modal = useRef();
     const navigate = useNavigate();
 
@@ -12,6 +12,10 @@ function ShelfDeleteModal(props) {
         modal.current.addEventListener("show.bs.modal", (e) => {
             setId(e.relatedTarget.getAttribute("data-bs-id"));
             setName(e.relatedTarget.getAttribute("data-bs-name"));
+        });
+        modal.current.addEventListener("hidden.bs.modal", (e) => {
+            setId(null);
+            setName("");
         });
     }, []);
 
