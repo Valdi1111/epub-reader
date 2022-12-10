@@ -67,7 +67,7 @@ function BookElement(props) {
             console.log("Locations loaded!");
         });
         $(document).keydown(onKeyDown);
-        updateLayout("auto");
+        updateLayout();
     }, [book]);
 
     useEffect(() => {
@@ -161,25 +161,6 @@ function BookElement(props) {
         themes.forEach(t => rendition.themes.register(t.theme, THEMES_URL + t.css));
         updateTheme();
     }
-
-    // Possibili funzioni per trovare il chapter tramite la href della current location
-    //let getNavItemByHref = href => (function flatten(arr){
-    //    return [].concat(...arr.map(v => [v, ...flatten(v.subitems)]));
-    //})(book.navigation.toc).filter(
-    //    item => book.canonical(item.href) == book.canonical(href)
-    //)[0] || null;
-
-    // Possibili funzioni per trovare il chapter tramite la href della current location
-    //let getChapter = href => {
-    //    let matches = (function flatten(items) {
-    //        return [].concat.apply([], items.map(item => [].concat.apply([item], flatten(item.subitems))));
-    //    })(book.navigation.toc).filter(item => book.canonical(item.href) == book.canonical(href));
-    //    if (matches.length > 1) {
-    //        console.log("too many toc matches", event, matches);
-    //        return null;
-    //    }
-    //    return matches[0].label.trim();
-    //};
 
     function flattenNav(items) {
         return [].concat.apply([], items.map(item => [].concat.apply([item], flattenNav(item.subitems))));

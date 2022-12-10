@@ -1,7 +1,7 @@
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPencil, faPlus, faTrash} from "@fortawesome/free-solid-svg-icons";
 
-function ShelfButtons(props) {
+function ShelvesListButtons(props) {
     const {active, shelf} = props;
 
     function AddButton() {
@@ -51,4 +51,4 @@ function ShelfButtons(props) {
     );
 }
 
-export default ShelfButtons;
+export default ShelvesListButtons;

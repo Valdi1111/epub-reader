@@ -1,6 +1,6 @@
 import {Link} from "react-router-dom";
 
-function ShelfItem(props) {
+function ShelvesListItem(props) {
     const {shelf, active} = props;
 
     function isActive() {
@@ -24,4 +24,4 @@ function ShelfItem(props) {
     );
 }
 
-export default ShelfItem;
+export default ShelvesListItem;

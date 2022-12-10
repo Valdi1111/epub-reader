@@ -5,7 +5,7 @@ import ShelfAddModal from "./modals/ShelfAddModal";
 import ShelfEditModal from "./modals/ShelfEditModal";
 import ShelfDeleteModal from "./modals/ShelfDeleteModal";
 import ShelvesList from "./ShelvesList";
-import ShelfContent from "./ShelfContent";
+import ShelvesContent from "./ShelvesContent";
 
 function LibraryShelves(props) {
     const {refresh} = props;
@@ -60,7 +60,7 @@ function LibraryShelves(props) {
             );
         });
     }
-     */
+    */
 
     return (
         <>
@@ -69,7 +69,7 @@ function LibraryShelves(props) {
             <ShelfDeleteModal refresh={refreshShelves}/>
             <div className={"flex-grow-1 d-flex flex-row"}>
                 <ShelvesList shelves={shelves} id={id}/>
-                <ShelfContent id={id} elements={elements}/>
+                <ShelvesContent id={id} elements={elements}/>
             </div>
         </>
     );
