@@ -15,7 +15,7 @@ function BookSettings(props) {
 
     return (
         <div className={"dropdown"}>
-            <button className={"top_bar_hover btn-icon btn btn-outline-secondary"} type={"button"}
+            <button className={"btn btn-icon btn-outline-secondary"} type={"button"}
                     id={"settings-dropdown"} data-bs-toggle={"dropdown"} aria-expanded={false}>
                 <FontAwesomeIcon icon={faGear} width={16} height={16}/>
             </button>

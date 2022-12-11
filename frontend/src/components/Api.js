@@ -1,8 +1,7 @@
 import {Book} from "epubjs";
 import axios from "axios";
 
-//export const URL = "http://192.168.1.170:12135/"
-export const URL = "/";
+export const URL = process.env.REACT_APP_API_URL || "/";
 export const API_URL = URL + "api/v1/";
 export const THEMES_URL = URL + "themes/";
 export const COVERS_URL = URL + "covers/";

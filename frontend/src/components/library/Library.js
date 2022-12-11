@@ -1,5 +1,5 @@
-import {Route, Routes, useLocation} from "react-router-dom";
-import {useEffect, useRef, useState} from "react";
+import {Route, Routes} from "react-router-dom";
+import {useRef, useState} from "react";
 import BookAddModal from "./modals/BookAddModal";
 import BookDeleteModal from "./modals/BookDeleteModal";
 import BookInfoModal from "./modals/BookInfoModal";
@@ -10,28 +10,10 @@ import LibraryBase from "./LibraryBase";
 import LibraryShelves from "./shelves/LibraryShelves";
 import ErrorPage from "../ErrorPage";
 import {getBooks, getNotInShelf} from "../Api";
-import $ from "jquery";
 
 function Library(props) {
     const [refresh, setRefresh] = useState(0);
     const refreshRef = useRef(0);
-    const location = useLocation();
-
-    useEffect(() => {
-        $("nav.nav-pills > .nav-link").removeClass("active");
-        if (location.pathname.startsWith("/library/all")) {
-            $("#pc-nav > .nav-link:nth-child(1)").addClass("active");
-            $("#mobile-nav > .nav-link:nth-child(2)").addClass("active");
-        }
-        if (location.pathname.startsWith("/library/shelves")) {
-            $("#pc-nav > .nav-link:nth-child(2)").addClass("active");
-            $("#mobile-nav > .nav-link:nth-child(3)").addClass("active");
-        }
-        if (location.pathname.startsWith("/library/not-in-shelf")) {
-            $("#pc-nav > .nav-link:nth-child(3)").addClass("active");
-            $("#mobile-nav > .nav-link:nth-child(4)").addClass("active");
-        }
-    }, [location]);
 
     function refreshBooks() {
         refreshRef.current = refreshRef.current + 1;

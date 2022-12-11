@@ -29,7 +29,7 @@ function BookContents(props) {
 
     return (
         <div className={"dropdown"}>
-            <button className={"top_bar_hover btn-icon btn btn-outline-secondary"} type={"button"} id={"ctn-dropdown"}
+            <button className={"btn btn-icon btn-outline-secondary"} type={"button"} id={"ctn-dropdown"}
                     data-bs-toggle={"dropdown"} aria-expanded={false}>
                 <FontAwesomeIcon icon={faBars} width={16} height={16}/>
             </button>
@@ -37,22 +37,22 @@ function BookContents(props) {
                 <div className={"btn-group w-100 px-2"} role={"group"} aria-label={"Contents button group"}>
                     <input type={"radio"} className={"btn-check"} name={"cnt-radio"} id={"cnt-toc"} autoComplete={"off"}
                            defaultChecked={true} onChange={cntChange} value={"toc"}/>
-                    <label className={"btn btn-outline-secondary btn-icon"} htmlFor={"cnt-toc"}>
+                    <label className={"btn btn-icon btn-outline-secondary"} htmlFor={"cnt-toc"}>
                         <FontAwesomeIcon icon={faListSquares} width={16} height={16}/>
                     </label>
                     <input type={"radio"} className={"btn-check"} name={"cnt-radio"} id={"cnt-annotations"}
                            autoComplete={"off"} onChange={cntChange} value={"annotations"}/>
-                    <label className={"btn btn-outline-secondary btn-icon"} htmlFor={"cnt-annotations"}>
+                    <label className={"btn btn-icon btn-outline-secondary"} htmlFor={"cnt-annotations"}>
                         <FontAwesomeIcon icon={faPencil} width={16} height={16}/>
                     </label>
                     <input type={"radio"} className={"btn-check"} name={"cnt-radio"} id={"cnt-bookmarks"}
                            autoComplete={"off"} onChange={cntChange} value={"bookmarks"}/>
-                    <label className={"btn btn-outline-secondary btn-icon"} htmlFor={"cnt-bookmarks"}>
+                    <label className={"btn btn-icon btn-outline-secondary"} htmlFor={"cnt-bookmarks"}>
                         <FontAwesomeIcon icon={faBookmark} width={16} height={16}/>
                     </label>
                     <input type={"radio"} className={"btn-check"} name={"cnt-radio"} id={"cnt-search"}
                            autoComplete={"off"} onChange={cntChange} value={"search"}/>
-                    <label className={"btn btn-outline-secondary btn-icon"} htmlFor={"cnt-search"}>
+                    <label className={"btn btn-icon btn-outline-secondary"} htmlFor={"cnt-search"}>
                         <FontAwesomeIcon icon={faMagnifyingGlass} width={16} height={16}/>
                     </label>
                 </div>

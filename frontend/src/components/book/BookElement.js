@@ -1,8 +1,6 @@
+import bootstrap from "bootstrap/dist/js/bootstrap.bundle.min";
 import {useNavigate, useParams} from "react-router-dom";
 import {cloneElement, useEffect, useState} from "react"
-//import "https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.5/jszip.min.js";
-//import JSZip from "jszip";
-import bootstrap from "bootstrap/dist/js/bootstrap.bundle.min";
 import {Book, EpubCFI} from "epubjs";
 import {
     FONT,
@@ -103,8 +101,7 @@ function BookElement(props) {
         // Open image view modal when clicking on img or image tag
         rendition.on("click", e => {
             if (e.target.tagName.toLowerCase() === "img" || e.target.tagName.toLowerCase() === "image") {
-                const modal = new bootstrap.Modal(document.getElementById("image-view-modal"));
-                modal.show(e.target);
+                new bootstrap.Modal(document.getElementById("image-view-modal")).show(e.target);
             }
         });
         // Turn page on mouse wheel

@@ -1,4 +1,4 @@
-import ImageViewModal from "./ImageViewModal";
+import ImageViewModal from "./modals/ImageViewModal";
 import BookFooter from "./BookFooter";
 import BookHeader from "./BookHeader";
 import BookBody from "./BookBody";
