@@ -1,6 +1,6 @@
 const db = require("./db");
 
-async function getAll() {
+async function getAll(limit, offset) {
     const [results,] = await db.promise().query(
         `SELECT b.id,
                 b.url,
@@ -8,20 +8,20 @@ async function getAll() {
                 bm.creator,
                 bc.cover,
                 bp.page,
-                JSON_LENGTH(bc.locations) AS total,
+                JSON_LENGTH(bc.locations)                                     AS total,
                 (SELECT s.id FROM shelf s WHERE b.url LIKE CONCAT(s.path, ?)) AS shelf
          FROM book b
                   INNER JOIN book_cache bc
                              ON b.id = bc.id
                   INNER JOIN book_metadata bm ON b.id = bm.id
                   INNER JOIN book_progress bp ON b.id = bp.id
-         ORDER BY bp.last_read DESC`,
+         ORDER BY bp.last_read DESC LIMIT ${offset}, ${limit}`,
         [`/%`]
     );
     return results;
 }
 
-async function getNotInShelf() {
+async function getNotInShelf(limit, offset) {
     const [results1,] = await db.promise().query(
         `SELECT s.path
          FROM shelf s`,
@@ -42,7 +42,7 @@ async function getNotInShelf() {
                       INNER JOIN book_cache bc ON b.id = bc.id
                       INNER JOIN book_metadata bm ON b.id = bm.id
                       INNER JOIN book_progress bp ON b.id = bp.id
-             ORDER BY bm.title`,
+             ORDER BY bm.title LIMIT ${offset}, ${limit}`,
             []
         );
         return results2;
@@ -60,7 +60,7 @@ async function getNotInShelf() {
                   INNER JOIN book_metadata bm ON b.id = bm.id
                   INNER JOIN book_progress bp ON b.id = bp.id
          WHERE b.url NOT REGEXP ?
-         ORDER BY bm.title`,
+         ORDER BY bm.title LIMIT ${offset}, ${limit}`,
         [exp]
     );
     return results2;

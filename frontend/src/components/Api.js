@@ -53,14 +53,16 @@ export async function getBooksInShelf(id) {
 
 export async function addShelf(path, name) {
     return await axios.post(
-        `${API_URL}shelves`, {path, name},
+        `${API_URL}shelves`,
+        {path, name},
         {headers: {"x-access-token": getToken()}}
     );
 }
 
 export async function editShelf(id, path, name) {
     return await axios.put(
-        `${API_URL}shelves/${id}`, {path, name},
+        `${API_URL}shelves/${id}`,
+        {path, name},
         {headers: {"x-access-token": getToken()}}
     );
 }
@@ -79,10 +81,10 @@ export async function findNew() {
     );
 }
 
-export async function getBooks() {
+export async function getBooks(limit, offset) {
     return await axios.get(
         `${API_URL}books`,
-        {headers: {"x-access-token": getToken()}}
+        {headers: {"x-access-token": getToken()}, params: {limit, offset}}
     );
 }
 
@@ -100,10 +102,10 @@ export async function getBookMetadata(id) {
     );
 }
 
-export async function getNotInShelf() {
+export async function getNotInShelf(limit, offset) {
     return await axios.get(
         `${API_URL}books/not-in-shelf`,
-        {headers: {"x-access-token": getToken()}}
+        {headers: {"x-access-token": getToken()}, params: {limit, offset}}
     );
 }
 
@@ -116,14 +118,16 @@ export async function deleteBook(id) {
 
 export async function markRead(id) {
     return await axios.put(
-        `${API_URL}books/${id}/progress/mark-read`, {},
+        `${API_URL}books/${id}/progress/mark-read`,
+        {},
         {headers: {"x-access-token": getToken()}}
     );
 }
 
 export async function markUnread(id) {
     return await axios.put(
-        `${API_URL}books/${id}/progress/mark-unread`, {},
+        `${API_URL}books/${id}/progress/mark-unread`,
+        {},
         {headers: {"x-access-token": getToken()}}
     );
 }

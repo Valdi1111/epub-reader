@@ -4,27 +4,47 @@ import LibraryItemAdder from "./LibraryItemAdder";
 
 function LibraryBase(props) {
     const {refresh, provider} = props;
-    const [allBooks, setAllBooks] = useState([]);
     const [books, setBooks] = useState([]);
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState(0);
+    const [hasMore, setHasMore] = useState(true);
+    const amount = 20;
 
+    // Reload all books from 0 to page on refresh
     useEffect(() => {
-        provider().then(
+        request(false, (page + 1) * amount, 0);
+    }, [refresh]);
+
+    // Show the first books on page change
+    useEffect(() => {
+        setPage(0);
+        request(false, amount, 0);
+    }, [provider]);
+
+    // Add more books to the screen
+    useEffect(() => {
+        if (page === 0) {
+            return;
+        }
+        request(true, amount, page * amount);
+    }, [page]);
+
+    function request(add, limit, offset) {
+        provider(limit + 1, offset).then(
             res => {
-                setAllBooks(res.data);
-                setBooks(res.data.slice(0, 20));
-                setPage(1);
+                if (add) {
+                    setBooks([...books, ...res.data.slice(0, limit)])
+                } else {
+                    setBooks(res.data.slice(0, limit))
+                }
+                setHasMore(res.data.length > limit);
             },
             err => console.error(err)
         );
-    }, [refresh, provider]);
+    }
 
-    useEffect(() => {
-        if (page === 1) {
-            return;
-        }
-        setBooks(allBooks.slice(0, 20 * page));
-    }, [page]);
+    function loadMore() {
+        setPage(page + 1);
+    }
 
     return (
         <div className={"scroll-pane flex-grow-1"}>
@@ -34,7 +54,7 @@ function LibraryBase(props) {
                         <LibraryItem book={b}/>
                     </div>
                 )}
-                <LibraryItemAdder allBooks={allBooks} books={books} page={page} setPage={setPage}/>
+                <LibraryItemAdder hasMore={hasMore} loadMore={loadMore}/>
             </div>
         </div>
     );

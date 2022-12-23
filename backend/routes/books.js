@@ -12,7 +12,9 @@ router.get(
     "/",
     async (req, res, next) => {
         try {
-            res.json(await books.getAll());
+            const limit = Number(req.query.limit);
+            const offset = Number(req.query.offset);
+            res.json(await books.getAll(limit, offset));
         } catch (err) {
             console.error("Error on GET /books.");
             next(err);
@@ -24,7 +26,9 @@ router.get(
     "/not-in-shelf",
     async (req, res, next) => {
         try {
-            res.json(await books.getNotInShelf());
+            const limit = Number(req.query.limit);
+            const offset = Number(req.query.offset);
+            res.json(await books.getNotInShelf(limit, offset));
         } catch (err) {
             console.error("Error on GET /books/not-in-self.");
             next(err);
