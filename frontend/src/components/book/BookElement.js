@@ -81,7 +81,7 @@ function BookElement(props) {
     }, [mark]);
 
     function updateLayout() {
-        let area = document.getElementById("view-root");
+        const area = document.getElementById("book-view");
         const layout = settings[LAYOUT];
         const gap = parseFloat(settings[MARGINS]);
         const width = parseFloat(settings[WIDTH]) + gap;
@@ -123,9 +123,9 @@ function BookElement(props) {
             }
             contents.documentElement.ontouchend = e => {
                 end = e.changedTouches[0];
-                const elBook = document.querySelector('#view-root');
-                if (elBook) {
-                    const bound = elBook.getBoundingClientRect();
+                const area = document.getElementById("book-view");
+                if (area) {
+                    const bound = area.getBoundingClientRect();
                     const hr = (end.screenX - start.screenX) / bound.width;
                     const vr = Math.abs((end.screenY - start.screenY) / bound.height);
                     if (hr > 0.1 && vr < 0.1) {
@@ -198,7 +198,8 @@ function BookElement(props) {
         theme["font-size"] = settings[FONT_SIZE] + (settings[FORCE_FONT_SIZE] === "true" ? "px !important" : "px");
         theme["line-height"] = settings[SPACING];
         theme["text-align"] = settings[JUSTIFY] === "true" ? "justify" : "left";
-        book.rendition.themes.default({"p": theme, "a": theme, "span": theme});
+        //book.rendition.themes.default({"p": theme, "a": theme, "span": theme});
+        book.rendition.themes.default({"body": theme});
     }
 
     function updateTheme() {

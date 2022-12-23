@@ -86,27 +86,7 @@ async function getById(id) {
     return results;
 }
 
-async function getMetadataById(id) {
-    const [results,] = await db.promise().query(
-        `SELECT *
-         FROM book_metadata bm
-         WHERE bm.id = ?`,
-        [id]
-    );
-    return results;
-}
-
-async function getCoverById(id) {
-    const [results,] = await db.promise().query(
-        `SELECT bc.cover
-         FROM book_cache bc
-         WHERE id = ?`,
-        [id]
-    );
-    return results;
-}
-
-async function add(url, m) {
+async function add(url, m, cover, locations, navigation) {
     const [results,] = await db.promise().query(
         `INSERT INTO book (url)
          VALUES (?)`,
@@ -124,9 +104,9 @@ async function add(url, m) {
         [id]
     );
     await db.promise().query(
-        `INSERT INTO book_cache (id)
-         VALUES (?)`,
-        [id]
+        `INSERT INTO book_cache (id, cover, navigation, locations)
+         VALUES (?, ?, ?, ?)`,
+        [id, cover, navigation, locations]
     );
     return results;
 }
@@ -159,12 +139,76 @@ async function remove(id) {
     return [results_bc, results_bm, results_b];
 }
 
+async function getMetadataById(id) {
+    const [results,] = await db.promise().query(
+        `SELECT *
+         FROM book_metadata bm
+         WHERE bm.id = ?`,
+        [id]
+    );
+    return results;
+}
+
+async function getCoverById(id) {
+    const [results,] = await db.promise().query(
+        `SELECT bc.cover
+         FROM book_cache bc
+         WHERE id = ?`,
+        [id]
+    );
+    return results;
+}
+
+async function setCover(id, cover) {
+    const [results,] = await db.promise().query(
+        `UPDATE book_cache c
+         SET c.cover = ?
+         WHERE c.id = ?`,
+        [cover, id]
+    );
+    return results;
+}
+
+async function setCoverNull(id) {
+    const [results,] = await db.promise().query(
+        `UPDATE book_cache c
+         SET c.cover = NULL
+         WHERE c.id = ?`,
+        [id]
+    );
+    return results;
+}
+
+async function setLocations(id, locations) {
+    const [results,] = await db.promise().query(
+        `UPDATE book_cache c
+         SET c.locations = ?
+         WHERE c.id = ?`,
+        [locations, id]
+    );
+    return results;
+}
+
+async function setNavigation(id, navigation) {
+    const [results,] = await db.promise().query(
+        `UPDATE book_cache c
+         SET c.navigation = ?
+         WHERE c.id = ?`,
+        [navigation, id]
+    );
+    return results;
+}
+
 module.exports = {
     getAll,
     getNotInShelf,
     getById,
+    add,
+    remove,
     getMetadataById,
     getCoverById,
-    add,
-    remove
+    setCover,
+    setCoverNull,
+    setLocations,
+    setNavigation
 }

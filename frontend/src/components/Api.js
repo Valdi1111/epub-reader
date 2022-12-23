@@ -128,87 +128,76 @@ export async function markUnread(id) {
     );
 }
 
-export async function createBook(url) {
-    console.log("Creating book from link...");
-    const epub = new Book(EPUB_URL + url);
-    const book = await epub.opened;
-    const res = await axios.post(
-        `${API_URL}books`,
-        {url, metadata: book.packaging.metadata},
-        {headers: {"x-access-token": getToken()}}
-    );
-    const id = res.data.id;
-    await saveCover(id, book);
-    await saveLocations(id, book);
-    await saveNavigation(id, book);
-    return id;
-}
-
-export async function invalidateCache(url, id) {
-    console.log("Book", id, "Recreating cache...");
-    const epub = new Book(EPUB_URL + url);
-    const book = await epub.opened;
-    await saveCover(id, book);
-    await saveLocations(id, book);
-    await saveNavigation(id, book);
-    return id;
-}
-
-async function saveCover(id, book) {
-    console.debug("Book", id, "Generating cover...");
-    const cover = await book.coverUrl();
-    if(!cover) {
-        await axios.delete(
-            `${API_URL}books/${id}/cache/cover`,
-            {headers: {"x-access-token": getToken()}}
-        );
-        console.log("Book", id, "Cover not found! Skipping cover caching...");
-        return;
-    }
-    const res = await fetch(cover);
-    const blob = await res.blob();
-    const data = new FormData();
-    data.append("cover", blob, "cover.png");
-    console.debug("Book", id, "Saving cover...");
-    await axios.put(
-        `${API_URL}books/${id}/cache/cover`,
-        data,
-        {headers: {"x-access-token": getToken(), "content-type": "multipart/form-data"}}
-    );
-    console.debug("Book", id, "Cover saved!");
-}
-
-async function saveLocations(id, book) {
-    console.debug("Book", id, "Generating locations...");
-    const locations = await book.locations.generate(1024);
-    console.debug("Book", id, "Saving locations...");
-    await axios.put(
-        `${API_URL}books/${id}/cache/locations`,
-        {locations},
-        {headers: {"x-access-token": getToken()}}
-    );
-    console.debug("Book", id, "Locations saved!");
-}
-
-async function saveNavigation(id, book) {
-    console.debug("Book", id, "Generating navigation...");
-    await loadAllSpines(book);
-    const navigation = generateNavigation(book, book.navigation);
-    console.debug("Book", id, "Saving navigation...");
-    await axios.put(
-        `${API_URL}books/${id}/cache/navigation`,
-        {navigation},
-        {headers: {"x-access-token": getToken()}}
-    );
-    console.debug("Book", id, "Navigation saved!");
-}
-
 export function savePosition(id, position, page) {
     return axios.put(
         `${API_URL}books/${id}/progress/position`,
         {position, page},
         {headers: {"x-access-token": getToken()}}
     );
+}
+
+export async function createBook(url) {
+    console.log("Creating book from link...");
+    const epub = new Book(EPUB_URL + url);
+    const book = await epub.opened;
+    const data = new FormData();
+    data.append("url", url);
+    data.append("metadata", JSON.stringify(book.packaging.metadata));
+    try {
+        // Generate Cache
+        await generateCache(data, "", book);
+        // Save
+        const res = await axios.post(
+            `${API_URL}books`,
+            data,
+            {headers: {"x-access-token": getToken(), "content-type": "multipart/form-data"}}
+        );
+        return Promise.resolve(res.data.id);
+    } catch (e) {
+        return Promise.reject(e);
+    }
+}
+
+export async function invalidateCache(url, id) {
+    console.log("Book", id, "Recreating cache...");
+    const epub = new Book(EPUB_URL + url);
+    const book = await epub.opened;
+    const data = new FormData();
+    try {
+        // Generate Cache
+        await generateCache(data, id, book);
+        // Save
+        await axios.put(
+            `${API_URL}books/${id}`,
+            data,
+            {headers: {"x-access-token": getToken(), "content-type": "multipart/form-data"}}
+        );
+        return Promise.resolve(id);
+    } catch (e) {
+        return Promise.reject(e);
+    }
+}
+
+async function generateCache(data, id, book) {
+    // Cover
+    console.debug("Book", id, "Generating cover...");
+    const cover = await book.coverUrl();
+    if (!cover) {
+        console.error("Book", id, "Cover not found! Skipping cover caching...");
+    } else {
+        const res = await fetch(cover);
+        const blob = await res.blob();
+        data.append("cover", blob, "cover.png");
+    }
+    // Locations
+    console.debug("Book", id, "Generating locations...");
+    const locations = await book.locations.generate(1024);
+    data.append("locations", JSON.stringify(locations));
+    // Navigation
+    console.debug("Book", id, "Generating navigation...");
+    await loadAllSpines(book);
+    const navigation = generateNavigation(book, book.navigation);
+    data.append("navigation", JSON.stringify(navigation));
 }
 
 async function loadAllSpines(book) {
@@ -229,15 +218,15 @@ function generateNavigation(book, items) {
         nav.label = item.label.trim();
         // check for ids in href
         let dash = "";
-        if(item.href.includes("#")) {
+        if (item.href.includes("#")) {
             dash = "#" + item.href.split('#').pop();
         }
         // handle items with null href (section for chapters)
-        if(!item.href) {
+        if (!item.href) {
             nav.href = null;
         }
         // get href from spine
-        else if(book.spine.get(item.href) !== null) {
+        else if (book.spine.get(item.href) !== null) {
             nav.href = book.spine.get(item.href).href + dash;
             //console.log("Using first method", nav["href"])
         }
@@ -247,7 +236,7 @@ function generateNavigation(book, items) {
             //console.log("Using second method", nav["href"])
         }
         // ignoring cfi for section
-        if(!nav.href) {
+        if (!nav.href) {
             nav.cfi = null;
         }
         // get chapter cfi from spine
