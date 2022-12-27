@@ -16,7 +16,9 @@ function BookBody(props) {
 
     return (
         <>
-            <div id={"book-view"} className={"d-flex flex-grow-1 justify-content-center"}/>
+            <div className={"position-relative flex-grow-1"}>
+                <div id={"book-view"} className={"position-absolute w-100 h-100 d-flex justify-content-center"}/>
+            </div>
             <LoadingScreen/>
         </>
     );

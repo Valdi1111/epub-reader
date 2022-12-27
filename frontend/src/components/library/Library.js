@@ -12,6 +12,7 @@ import ErrorPage from "../ErrorPage";
 import {getBooks, getNotInShelf} from "../Api";
 
 function Library(props) {
+    const {settings, setSetting, logout} = props;
     const [refresh, setRefresh] = useState(0);
     const refreshRef = useRef(0);
 
@@ -26,9 +27,9 @@ function Library(props) {
             <BookInfoModal/>
             <BookInvalidateModal refresh={refreshBooks}/>
             <BookDeleteModal refresh={refreshBooks}/>
-            <ThemeChangeModal settings={props.settings} setSetting={props.setSetting} themes={props.themes}/>
+            <ThemeChangeModal settings={settings} setSetting={setSetting}/>
             <div className={"d-flex flex-column min-vh-100"}>
-                <LibraryHeader logout={props.logout}/>
+                <LibraryHeader logout={logout}/>
                 <Routes>
                     <Route path={"all"} element={<LibraryBase refresh={refresh} provider={getBooks}/>}/>
                     <Route path={"shelves"} element={<LibraryShelves refresh={refresh}/>}/>

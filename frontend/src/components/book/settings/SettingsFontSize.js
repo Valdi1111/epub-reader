@@ -1,4 +1,4 @@
-import {FONT_SIZE} from "../../Settings";
+import {FONT_SIZE, FONT_SIZES} from "../../Settings";
 
 function SettingsFontSize(props) {
     const {settings, setSetting} = props;
@@ -12,8 +12,8 @@ function SettingsFontSize(props) {
             <label className={"col-4 col-form-label"}>Font size</label>
             <div className={"col-8"}>
                 <select id={"input-font"} className={"form-select"} defaultValue={settings[FONT_SIZE]} onChange={fontSize}>
-                    {[...Array(25).keys()].map(i =>
-                        <option key={i + 6} value={i + 6}>{i + 6}</option>
+                    {FONT_SIZES.map(i =>
+                        <option key={i} value={i}>{i}</option>
                     )}
                 </select>
             </div>

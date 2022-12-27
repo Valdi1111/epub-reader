@@ -6,7 +6,7 @@ function LibraryBase(props) {
     const {refresh, provider} = props;
     const [books, setBooks] = useState([]);
     const [page, setPage] = useState(0);
-    const [hasMore, setHasMore] = useState(true);
+    const [hasMore, setHasMore] = useState(false);
     const amount = 20;
 
     // Reload all books from 0 to page on refresh

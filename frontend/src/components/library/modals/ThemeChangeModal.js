@@ -1,20 +1,21 @@
 import $ from "jquery";
-import {THEME} from "../../Settings";
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useRef} from "react";
+import {THEME, THEMES} from "../../Settings";
 
 function ThemeChangeModal(props) {
+    const {settings, setSetting} = props;
     const modal = useRef();
 
     useEffect(() => {
         modal.current.addEventListener("hidden.bs.modal", (e) => {
             $("div.modal-body input[name='select-theme']").prop("checked", false);
-            $("#theme-" + props.settings[THEME]).prop("checked", true);
+            $("#theme-" + $("html").attr("data-theme")).prop("checked", true);
         });
     }, []);
 
     function confirm() {
         const theme = $("div.modal-body input[name='select-theme']:checked");
-        props.setSetting(THEME, theme.val());
+        setSetting(THEME, theme.val());
     }
 
     function Theme(t) {
@@ -22,7 +23,7 @@ function ThemeChangeModal(props) {
         return (
             <div className={"form-check"}>
                 <input className={"form-check-input"} type={"radio"} id={"theme-" + id} name={"select-theme"}
-                       defaultChecked={props.settings[THEME] === id} value={id}/>
+                       defaultChecked={settings[THEME] === id} value={id}/>
                 <label className={"w-100 form-check-label"} htmlFor={"theme-" + id}>{name}</label>
             </div>
         );
@@ -39,7 +40,7 @@ function ThemeChangeModal(props) {
                                 aria-label={"Close"}/>
                     </div>
                     <div className={"modal-body"}>
-                        {props.themes.map(t => <Theme key={t.theme} id={t.theme} name={t.name}/>)}
+                        {THEMES.map(t => <Theme key={t.theme} id={t.theme} name={t.name}/>)}
                     </div>
                     <div className={"modal-footer"}>
                         <button type={"button"} className={"btn btn-danger"} data-bs-dismiss={"modal"}>

@@ -3,7 +3,6 @@ import axios from "axios";
 
 export const URL = process.env.REACT_APP_API_URL || "/";
 export const API_URL = URL + "api/v1/";
-export const THEMES_URL = URL + "themes/";
 export const COVERS_URL = URL + "covers/";
 export const EPUB_URL = URL + "epub/";
 
@@ -31,10 +30,6 @@ export async function getUserData() {
         `${API_URL}users/data`,
         {headers: {"x-access-token": getToken()}}
     );
-}
-
-export async function getThemes() {
-    return await axios.get(`${THEMES_URL}themes.json`);
 }
 
 export async function getShelves() {

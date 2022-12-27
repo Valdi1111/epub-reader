@@ -4,18 +4,19 @@ import $ from "jquery";
 import {
     FONT,
     FONT_SIZE,
-    FORCE_FONT,
-    FORCE_FONT_SIZE,
-    FONTS,
     SPACING,
     MARGINS,
     WIDTH,
-    THEME,
+    FORCE_FONT,
+    FORCE_FONT_SIZE,
     JUSTIFY,
     LAYOUT,
-    LAYOUT_AUTO
+    THEME,
+    FONTS,
+    LAYOUTS,
+    THEMES
 } from "./Settings";
-import {getThemes, getToken, getUserData} from "./Api";
+import {getToken, getUserData} from "./Api";
 import Library from "./library/Library";
 import BookElement from "./book/BookElement";
 import BookRenderer from "./book/BookRenderer";
@@ -25,10 +26,8 @@ import CheckAuth from "./CheckAuth";
 
 function App() {
     const [settings, setSettings] = useState({});
-    const [themes, setThemes] = useState([]);
     const [authData, setAuthData] = useState({loaded: false, data: null});
     const [readySettings, setReadySettings] = useState(false);
-    const [readyThemes, setReadyThemes] = useState(false);
     const [readyAuth, setReadyAuth] = useState(false);
 
     // Load settings
@@ -41,8 +40,8 @@ function App() {
         getSettingOrSave(s, SPACING, 1.4);
         getSettingOrSave(s, MARGINS, 100);
         getSettingOrSave(s, WIDTH, 1700);
-        getSettingOrSave(s, THEME, "dark");
-        getSettingOrSave(s, LAYOUT, LAYOUT_AUTO);
+        getSettingOrSave(s, THEME, Object.keys(THEMES)[0]);
+        getSettingOrSave(s, LAYOUT, Object.keys(LAYOUTS)[0]);
         getSettingOrSave(s, JUSTIFY, true);
         setSettings(s);
         setReadySettings(true);
@@ -64,20 +63,6 @@ function App() {
         s[key] = value;
         setSettings({...s});
     }
-
-    // Load themes
-    useEffect(() => {
-        getThemes().then(
-            res => {
-                setThemes(res.data);
-                setReadyThemes(true);
-            },
-            err => {
-                console.error(err);
-                setReadyThemes(true);
-            }
-        );
-    }, []);
 
     useEffect(() => {
         if (settings[THEME] === undefined) {
@@ -112,8 +97,8 @@ function App() {
         setReadyAuth(false);
     }
 
-    // Wait for themes, settings and auth
-    if (!readyAuth || !readySettings || !readyThemes) {
+    // Wait for settings and auth
+    if (!readyAuth || !readySettings) {
         return (
             <div className={"vh-100 vw-100 d-flex justify-content-center align-items-center"}>
                 <div className={"spinner-border"} role={"status"}>
@@ -134,12 +119,12 @@ function App() {
                 }/>
                 <Route path={"library/*"} element={
                     <CheckAuth auth={authData}>
-                        <Library settings={settings} setSetting={setSetting} themes={themes} logout={refreshAuth}/>
+                        <Library settings={settings} setSetting={setSetting} logout={refreshAuth}/>
                     </CheckAuth>
                 }/>
                 <Route path={"books/:id"} element={
                     <CheckAuth auth={authData}>
-                        <BookElement settings={settings} setSetting={setSetting} themes={themes}>
+                        <BookElement settings={settings} setSetting={setSetting}>
                             <BookRenderer/>
                         </BookElement>
                     </CheckAuth>

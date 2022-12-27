@@ -7,14 +7,20 @@ function SettingsFont(props) {
         setSetting(FONT, e.target.value);
     }
 
+    function getFonts() {
+        let e = [];
+        for (let id in FONTS) {
+            e = [...e, <option key={id} value={id}>{FONTS[id]}</option>];
+        }
+        return e;
+    }
+
     return (
         <div className={"row mx-0 mb-2"}>
             <label className={"col-4 col-form-label"}>Font</label>
             <div className={"col-8"}>
                 <select id={"input-font"} className={"form-select"} defaultValue={settings[FONT]} onChange={font}>
-                    {FONTS.map(i =>
-                        <option key={i} value={i}>{i}</option>
-                    )}
+                    {getFonts()}
                 </select>
             </div>
         </div>

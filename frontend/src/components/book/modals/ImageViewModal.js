@@ -6,6 +6,7 @@ import {copyImageToClipboard} from "copy-image-clipboard"
 function ImageViewModal() {
     const [title, setTitle] = useState("Image from book");
     const [rotation, setRotation] = useState(0);
+    const [width, setWidth] = useState(100);
     const img = useRef();
     const input = useRef();
     const label = useRef();
@@ -42,21 +43,21 @@ function ImageViewModal() {
     }
 
     async function copy() {
-        console.log("Copying image to clipboard...");
+        console.debug("Copying image to clipboard...");
         copyImageToClipboard(img.current.src)
-            .then(() => console.log("Image copied successfully!"))
+            .then(() => console.debug("Image copied successfully!"))
             .catch(err => console.error(err));
     }
 
     async function download() {
-        console.log("Downloading image...");
+        console.debug("Downloading image...");
         const res = await fetch(img.current.src);
         const blob = await res.blob();
         const element = document.createElement("a");
         element.href = URL.createObjectURL(blob);
         element.download = img.current.alt || "image";
         element.click();
-        console.log("Image downloaded successfully!");
+        console.debug("Image downloaded successfully!");
     }
 
     function widthChange(e) {
@@ -80,23 +81,29 @@ function ImageViewModal() {
             <div className={"modal-dialog modal-fullscreen"}>
                 <div className={"modal-content"}>
                     <div className={"modal-header"}>
-                        <h5 className={"modal-title"} id={"image-view-modal-label"}>{title}</h5>
+                        <h5 className={"modal-title text-truncate flex-grow-1"} id={"image-view-modal-label"}>
+                            {title}
+                        </h5>
                         <button type={"button"} className={"btn-close"} data-bs-dismiss={"modal"} aria-label={"Close"}/>
                     </div>
                     <div className={"modal-body p-0"}>
-                        <img ref={img}/>
+                        <img ref={img} alt={""} src={""} width={width + "%"}/>
                     </div>
-                    <div className={"modal-footer justify-content-center"}>
+                    <div id={"image-view-modal-footer"} className={"modal-footer"}>
                         <button className={"btn btn-icon btn-outline-secondary"} onClick={copy}>
                             <FontAwesomeIcon icon={faCopy} width={16} height={16}/>
                         </button>
                         <button className={"btn btn-icon btn-outline-secondary"} onClick={download}>
                             <FontAwesomeIcon icon={faDownload} width={16} height={16}/>
                         </button>
-                        <input ref={input} type={"range"} id={"image-width"} className={"form-range w-auto ms-auto"}
-                               min={10} max={300} step={10} defaultValue={100} onChange={e => widthChange(e.target)}
-                               onWheel={wheelChange}/>
-                        <label ref={label} htmlFor={"image-width"} className={"form-label me-auto"}>100%</label>
+                        <div className={"d-flex flex-row"}>
+                            <input ref={input} type={"range"} id={"image-width"} className={"form-range flex-grow-1"}
+                                   min={10} max={300} step={10} defaultValue={100} onChange={e => widthChange(e.target)}
+                                   onWheel={wheelChange}/>
+                            <label ref={label} htmlFor={"image-width"} className={"form-label text-center small mb-0 ps-2"}>
+                                100%
+                            </label>
+                        </div>
                         <button className={"btn btn-icon btn-outline-secondary"} onClick={e => rotate(-90)}>
                             <FontAwesomeIcon icon={faRotateLeft} width={16} height={16}/>
                         </button>

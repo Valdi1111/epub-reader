@@ -5,20 +5,23 @@ import {Book, EpubCFI} from "epubjs";
 import {
     FONT,
     FONT_SIZE,
+    SPACING,
+    MARGINS,
+    WIDTH,
     FORCE_FONT,
     FORCE_FONT_SIZE,
     JUSTIFY,
     LAYOUT,
-    LAYOUTS,
-    MARGINS,
-    SPACING,
     THEME,
-    WIDTH
+    FONTS,
+    LAYOUTS,
+    THEMES,
+    isWheelActive
 } from "../Settings";
-import {EPUB_URL, THEMES_URL, getBookById, savePosition} from "../Api";
+import {EPUB_URL, getBookById, savePosition} from "../Api";
 
 function BookElement(props) {
-    const {settings, setSetting, themes} = props;
+    const {settings, setSetting} = props;
     const {id} = useParams();
     // book
     const [book, setBook] = useState(null);
@@ -82,11 +85,12 @@ function BookElement(props) {
 
     function updateLayout() {
         const area = document.getElementById("book-view");
+        area.innerHTML = "";
         const layout = settings[LAYOUT];
         const gap = parseFloat(settings[MARGINS]);
         const width = parseFloat(settings[WIDTH]) + gap;
         let rendition = book.renderTo(area, {
-            ...LAYOUTS[layout],
+            ...LAYOUTS[layout].settings,
             width: width + "px",
             height: "100%",
             gap: gap
@@ -106,6 +110,9 @@ function BookElement(props) {
         });
         // Turn page on mouse wheel
         rendition.hooks.content.register(contents => {
+            if(!isWheelActive(settings)) {
+                return;
+            }
             contents.documentElement.onwheel = e => {
                 if (e.deltaY < 0) {
                     onLeft();
@@ -156,7 +163,7 @@ function BookElement(props) {
             }
         });
         updateDefaultTheme();
-        themes.forEach(t => rendition.themes.register(t.theme, THEMES_URL + t.css));
+        THEMES.forEach(t => rendition.themes.register(t.theme, t.css));
         updateTheme();
     }
 
@@ -194,12 +201,11 @@ function BookElement(props) {
 
     function updateDefaultTheme() {
         const theme = {};
-        theme["font-family"] = settings[FONT] + (settings[FORCE_FONT] === "true" ? " !important" : "");
+        theme["font-family"] = FONTS[settings[FONT]] + (settings[FORCE_FONT] === "true" ? " !important" : "");
         theme["font-size"] = settings[FONT_SIZE] + (settings[FORCE_FONT_SIZE] === "true" ? "px !important" : "px");
         theme["line-height"] = settings[SPACING];
         theme["text-align"] = settings[JUSTIFY] === "true" ? "justify" : "left";
-        //book.rendition.themes.default({"p": theme, "a": theme, "span": theme});
-        book.rendition.themes.default({"body": theme});
+        book.rendition.themes.default({body: theme});
     }
 
     function updateTheme() {
