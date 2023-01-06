@@ -7,7 +7,7 @@ function LibraryItemCover(props) {
         return (
             <Link className={"d-flex justify-content-center align-items-center"} style={{height: "225px"}}
                   title={title} to={`/books/${id}`}>
-                <img className={"img-fluid mt-auto"} alt={"cover"} src={COVERS_URL + cover}/>
+                <img className={"img-fluid mt-auto"} alt={"cover"} src={COVERS_URL + cover} loading={"lazy"}/>
             </Link>
         );
     }

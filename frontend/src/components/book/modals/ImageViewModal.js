@@ -6,7 +6,6 @@ import {copyImageToClipboard} from "copy-image-clipboard"
 function ImageViewModal() {
     const [title, setTitle] = useState("Image from book");
     const [rotation, setRotation] = useState(0);
-    const [width, setWidth] = useState(100);
     const img = useRef();
     const input = useRef();
     const label = useRef();
@@ -16,7 +15,7 @@ function ImageViewModal() {
         modal.current.addEventListener("show.bs.modal", (e) => {
             const target = e.relatedTarget;
             if (target.tagName.toLowerCase() === "img") {
-                setTitle(target.alt);
+                setTitle(target.alt || "Image from book");
                 img.current.alt = target.alt;
                 img.current.src = target.src;
             }
@@ -87,7 +86,7 @@ function ImageViewModal() {
                         <button type={"button"} className={"btn-close"} data-bs-dismiss={"modal"} aria-label={"Close"}/>
                     </div>
                     <div className={"modal-body p-0"}>
-                        <img ref={img} alt={""} src={""} width={width + "%"}/>
+                        <img ref={img} alt={""} src={""} width={"100%"}/>
                     </div>
                     <div id={"image-view-modal-footer"} className={"modal-footer"}>
                         <button className={"btn btn-icon btn-outline-secondary"} onClick={copy}>
