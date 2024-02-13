@@ -33,14 +33,14 @@ function App() {
     // Load settings
     useEffect(() => {
         const s = {};
-        getSettingOrSave(s, FONT, FONTS[0]);
+        getSettingOrSave(s, FONT, Object.keys(FONTS)[0]);
         getSettingOrSave(s, FONT_SIZE, 19);
         getSettingOrSave(s, FORCE_FONT, true);
         getSettingOrSave(s, FORCE_FONT_SIZE, true);
         getSettingOrSave(s, SPACING, 1.4);
         getSettingOrSave(s, MARGINS, 100);
         getSettingOrSave(s, WIDTH, 1700);
-        getSettingOrSave(s, THEME, Object.keys(THEMES)[0]);
+        getSettingOrSave(s, THEME, THEMES[0].theme);
         getSettingOrSave(s, LAYOUT, Object.keys(LAYOUTS)[0]);
         getSettingOrSave(s, JUSTIFY, true);
         setSettings(s);
